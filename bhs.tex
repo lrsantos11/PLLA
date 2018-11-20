@@ -63,11 +63,11 @@
 
 \begin{abstract}
 
-Interior point methods have attracted most of the attention in the recent decades for solving large scale convex quadratic programming problems. In this paper we take a different route as we present a penalty method for convex quadratic programming based on recent augmented Lagrangian developments for nonlinear programming. The motivation of this approach is that Newton Method can be efficient for minimizing a piecewise quadratic function. Moreover, since penalty methods do not rely on proximity to the central path, some of the inherent difficulties in interior point methods can be avoided. Also, a good starting point can be easily exploited, which can be relevant for solving subproblems arising from sequential quadratic programming. Some theoretical results on linear programming and strictly convex programming are presented. Numerical experiments on strictly convex quadratic problems formulated from the Netlib collection show that our method can be competitive with interior point methods, which suggests that more research on penalty methods should be conducted.\\
+Interior point methods have attracted most of the attention in the recent decades for solving large scale convex quadratic programming problems. In this paper we take a different route as we present a penalty method for convex quadratic programming based on recent augmented Lagrangian developments for nonlinear programming. The motivation of this approach is that Newton Method can be efficient for minimizing a piecewise quadratic function. Moreover, since penalty methods do not rely on proximity to the central path, some of the inherent difficulties in interior point methods can be avoided. Also, a good starting point can be easily exploited, which can be relevant for solving subproblems arising from sequential quadratic programming. Some theoretical results on linear programming and strictly convex programming are presented. Numerical experiments on strictly convex quadratic problems formulated from the \textsc{Netlib} collection show that our method can be competitive with interior point methods, which suggests that more research on penalty methods should be conducted.\\
 
-\noindent {\bf Key words:} Linear programming, convex quadratic programming, augmented Lagrangian, penalty methods, interior point methods\\
+\noindent \textbf{Key words:} Linear programming, convex quadratic programming, augmented Lagrangian, penalty methods, interior point methods\\
 
-\noindent {\bf AMS Subject Classification:} 90C30, 49K99, 65K05.
+\noindent \textbf{AMS Subject Classification:} 90C30, 49K99, 65K05.
 
 \end{abstract}
 
@@ -84,15 +84,15 @@ In nonlinear programming, a dual approach to barrier methods are the classical p
 
 Given the enormous success of interior point methods since the work of Karmarkar in 1984, research in penalty methods have been overlooked in favor of barrier-type methods. This is not without merit, however, the goal of this paper is to show that very simple penalty methods can perform similarly to barrier-type methods.
 
-Usually, in interior point methods, a sufficiently interior initial point must be computed in order for the method to perform well. The Mehrotra initial point strategy is often the choice, even to the point that many interior point linear programming solvers do not even allow the user to specify a different initial point. This situation can be costly if one is solving a perturbation of a problem that has already been solved. A particular case is when a sequence of linear programming problems are solved, as in sequential linear programming methods for nonlinear optimization. In this case, the solution of a problem can give significative information about the solution of the next problem. Thus, not using the solution of the previous problem as an initial point for the next, is usually a bad decision. Recently some warmstart strategies for interior point methods have been presented, which are competitive with Simplex solvers \cite{}. However, even when an initial solution is given in a warmstarted interior point method, some modification of the solution must occur in order to provide to the solver an initial point in a neighborhood of the central path. This drawback is not present in penalty methods, as any initial solution can be exploited in its entirety.
+Usually, in interior point methods, a sufficiently interior initial point must be computed in order for the method to perform well. The Mehrotra initial point strategy~\cite{Mehrotra:1992wr} is often the choice, even to the point that many interior point linear programming solvers do not even allow the user to specify a different initial point. This situation can be costly if one is solving a perturbation of a problem that has already been solved. A particular case is when a sequence of linear programming problems are solved, as in sequential linear programming methods for nonlinear optimization. In this case, the solution of a problem can give significative information about the solution of the next problem. Thus, not using the solution of the previous problem as an initial point for the next, is usually a bad decision. Recently some warm-start strategies for interior point methods have been presented, which are competitive with Simplex solvers~\cite{Yildirim:2002iy,John:2007jm}. However, even when an initial solution is given in a warm-started interior point method, some modification of the solution must occur in order to provide to the solver an initial point in a neighborhood of the central path. This drawback is not present in penalty methods, as any initial solution can be exploited in its entirety.
 
 There has been many recent developments in penalty methods for nonlinear optimization, in particular, in augmented Lagrangian methods. In this paper, we revisit the convex quadratic programming problem in light of these recent augmented Lagrangian methods in order to propose an efficient method. Our algorithm will follow very closely an interior-point-like framework, in the sense that its core computational work will resort to the computation of interior-point-like Newton directions.
 
-In Section 2, we recall some general augmented Lagrangian results, where we obtain some especialized results in the linear and convex quadratic cases. In Section 3, we present our strategy for solving the augmented Lagrangian subproblem. In Section 4, we present our numerical results.\\
+In Section 2, we recall some general augmented Lagrangian results, where we obtain some specialized results in the linear and convex quadratic cases. In Section 3, we present our strategy for solving the augmented Lagrangian subproblem. In Section 4, we present our numerical results.\\
 
 
 
-\noindent {\bf Notation:} The symbol $\|\cdot\|$ denotes the Euclidean norm in $\R^n$. By $\R^n_+$ we denote the set of vectors in $\R^n$ with all components non-negative. The set of non-negative integers is denoted by $\N$. If $K \subseteq \N$ is an infinite sequence of indices and $\lim_{k \in K} x^k = x$, we say that $x$ is a limit point of the sequence $\{x^k\}$.
+\noindent \textbf{Notation:} The symbol $\|\cdot\|$ denotes the Euclidean norm in $\R^n$. By $\R^n_+$ we denote the set of vectors in $\R^n$ with all components non-negative. The set of non-negative integers is denoted by $\N$. If $K \subseteq \N$ is an infinite sequence of indices and $\lim_{k \in K} x^k = x$, we say that $x$ is a limit point of the sequence $\{x^k\}$.
 
 
 
@@ -113,12 +113,12 @@ x\mapsto L(x,\rho,\lambda,\mu)=f(x)+\frac{\rho}{2}\left(\left\|H(x)+\frac{\lambd
 The augmented Lagrangian method as described in \cite{bmbook}, in each iteration, approximately solves the subproblem of minimizing the augmented Lagrangian function subject to the lower-level constraints.  Therefore, the set $F \equiv \{x\in\R^m\mid h(x)=0, g(x)\leq0\}$ is the feasible set of the subproblems. The Lagrange multipliers approximations are updated at each iteration  in a standard way and  the penalty parameter increases when progress, measured in terms of feasibility and complementarity, is not sufficiently made. More precisely, given the current iterate $x^k\in\R^m$, the current penalty parameter $\rho_k>0$, and the current Lagrange multipliers approximations $\lambda^k\in\R^{\bar{m}}$ and $\mu^k\in\R^{\bar{p}}_+$, a new iteration is computed in the following way:
 
 \begin{itemize}
-\item {\bf Step 1 (solve subproblem)}: from $x^k$, find an approximate solution $x^{k+1}$ of the problem:
+\item \textbf{Step 1 (solve subproblem)}: from $x^k$, find an approximate solution $x^{k+1}$ of the problem:
 \begin{equation} \label{subproblemaLA}
 \text{Minimize } L(x,\rho_k,\lambda^k,\mu^k), \text{ subject to } x\in F.
 \end{equation}
-\item {\bf Step 2 (update multipliers)}: compute $\lambda^{k+1}$ in $[\lambda_{min},\lambda_{max}]$ and $\mu^{k+1}$ in $[0,\mu_{max}]$.
-\item {\bf Step 3 (update penalty)}: Set $V^{k+1}=\max\{G(x^{k+1}),-\mu^k/\rho_k\}$. If $$\|(H(x^{k+1}),V^{k+1})\|_\infty> \frac{1}{2}\|(H(x^{k}),V^{k})\|_\infty,$$ set $\rho_{k+1}=10\rho_k$, otherwise set $\rho_{k+1}=\rho_k$.
+\item \textbf{Step 2 (update multipliers)}: compute $\lambda^{k+1}$ in $[\lambda_{min},\lambda_{max}]$ and $\mu^{k+1}$ in $[0,\mu_{max}]$.
+\item \textbf{Step 3 (update penalty)}: Set $V^{k+1}=\max\{G(x^{k+1}),-\mu^k/\rho_k\}$. If $$\|(H(x^{k+1}),V^{k+1})\|_\infty> \frac{1}{2}\|(H(x^{k}),V^{k})\|_\infty,$$ set $\rho_{k+1}=10\rho_k$, otherwise set $\rho_{k+1}=\rho_k$.
 \end{itemize}
 
 One of the most usual rules for updating the multipliers is the first order update in which $\lambda^{k+1}$ is computed as the projection of $\lambda^k+\rho_k H(x^{k+1})$ onto a safeguarded box $[\lambda_{min},\lambda_{max}]$ and $\mu^{k+1}$ as the projection of $\mu^k+\rho_k G(x^{k+1})$ onto a safeguarded box $[0,\mu_{max}]$. Standard first- and second-order global convergence results are proved under weak constraint qualifications, depending whether subproblems are solved approximately up to first- or second-order, respectively. See, for instance, \cite{bhr} for details. If approximate global minimizers are found for the subproblems, one gets convergence to a global minimizer, and that is the main reason for using a safeguarded Lagrange multiplier. See \cite{bmbook}.
@@ -129,7 +129,7 @@ In \cite{seco}, a radical shift of approach was suggested, by penalizing the box
 
 This approach is very similar to the interior point approach, where simple bound constraints are penalized with the log-barrier function, and Newton method is used for solving the subproblem with equality constraints. This similarities motivated us to compare the interior point and the augmented Lagrangian approaches in the simplest context, that is, when the constraints are linear and the objective function is convex and quadratic.
 
-We will present an augmented Lagrangin algorithm for convex quadratic programming on the lines of the developments in \cite{seco}. That is, we are interested in the following problem:
+We will present an augmented Lagrangian algorithm for convex quadratic programming on the lines of the developments in \cite{seco}. That is, we are interested in the following problem:
 \begin{equation} \label{PL}
 \text{Minimize } \frac{1}{2}x^TQx+c^Tx \text{ subject to } Ax=b, \;\;\; l \leq x \leq
 u,
@@ -139,7 +139,7 @@ The set $F$ is defined by the points that fulfill the equality constraints, that
 $$F=\{x\in\R^n\mid Ax=b\}.$$
 
 %Usually, two approaches are used for analyzing the global convergence of Augmented Lagrangian algorithms: one considering convergence to global minimizers and the other to stationary points. This is done by considering that approximate global minimizers of the subproblems are found or, respectively, approximate stationary points. Since we are only dealing with convex problems (and subproblems), where all stationary points are global minimizers, this distinction is irrelevant. Since it is relatively easy to check the KKT conditions at a given point, we have chosen to state that a point is an $\varepsilon$-approximate solution of the subproblem when it satisfies its KKT conditions up to a precision $\varepsilon$.
- 
+
 
 The algorithm presented in this section is a particular
 case of the Augmented Lagrangian method described previously, when applied to the convex quadratic programming problem \eqref{PL}, penalizing the box constraints and considering the equality constraints as the lower level constraints. An approximate solution for the subproblem will be one that satisfies the first-order stationary condition up to a given tolerance. Due to the convexity of the problem, this will be enough to obtain convergence to a global minimizer.
@@ -203,73 +203,81 @@ L(x,\rho_k,\mu_l^k,\mu_u^k)=\frac{1}{2}x^TQx+c^Tx+\frac{\rho_k}{2}\left(\left\|\
   \end{algorithmic}
 \end{algorithm}
 
-We will consider two options for the Lagrange multiplier update in Step 3. The first-order update will be defined as $\mu_l^{k+1}=\max\{0,\mu_l^k+\rho_k(-x^k+l)\}$ and $\mu_u^{k+1}=\max\{0,\mu_u^k+\rho_k(u+x^k)\}$. With this update, it has been proved in \cite{LAgnep} that the sequence $\{(\mu_l^k,\mu_u^k)\}$ is bounded. More specifically, the first-order Lagrange multiplier update is bounded for problems that satisfy the quasinormality constraint qualification (which includes linear constraints). This indicates that this update is acceptable for sufficiently large $\mu_{max}$, hence this parameter can be dropped.
+We will consider two options for the Lagrange multiplier update in Step 3. The first-order update will be defined as $\mu_l^{k+1}=\max\{0,\mu_l^k+\rho_k(-x^k+l)\}$ and $\mu_u^{k+1}=\max\{0,\mu_u^k+\rho_k(u+x^k)\}$. With this update, it has been proved in \cite{LAgnep} that the sequence $\{(\mu_l^k,\mu_u^k)\}$ is bounded. More specifically, the first-order Lagrange multiplier update is bounded for problems that satisfy the quasinormality constraint qualification (which includes linear constraints). This indicates that our update is acceptable for sufficiently large $\mu_{max}$, hence our update coincides with the one described in the general augmented Lagrangian method \cite{bmbook}. 
 
 
 
-Our second-order Lagrange multiplier update is used when dealing with separable strictly convex quadratic problems. The update formula is obtained according to the ideas presented in \cite{yaxyuan}. For this purpose we need to introduce a notation to refer to the coordinates associated with the active box constraints at a point $x^{k+1}$, as well as with parts of vectors and matrices corresponding to these coordinates. Let $I_l=\{i: x^{k+1}_i\leq l_i\}$ and $I_u=\{i: x^{k+1}_i\geq u\}$ be the indexes of active or infeasible box constraints. Let us define $\mathcal{I}_{I_l}$  as the $|I_l|\times n$ matrix formed by the $i$-th line of the $n\times n$ identity, $i\in I_l$. Similarly we define $\mathcal{I}_{I_u}$. 
+Our second-order Lagrange multiplier update is used when dealing with separable strictly convex quadratic problems. The update formula is obtained according to the ideas presented in \cite{yaxyuan}. For this purpose we need to introduce a notation to refer to the coordinates associated with the active box constraints at a point $x^{k+1}$, as well as parts of vectors and matrices corresponding to these coordinates. Let $I_l=\{i: x^{k+1}_i\leq l_i\}$ and $I_u=\{i: x^{k+1}_i\geq u\}$. Let us define $id_{I_l}$  as the $|I_l|\times n$ matrix formed by the $i$-th line of the $n\times n$ identity, $i\in I_l$. Similarly we define $id_{I_u}$. 
 
-Let $Z=\left(\begin{array}{c} -\mathcal{I}_{I_l}\\\mathcal{I}_{I_u}\\A\end{array}\right)$ and $M=Z(Q+H)^{-1}Z^\mathtt{T}$, where $H$ is the Hessian of $$\frac{\rho_k}{2}\left(\left\|\max\left\{-x+\left(l+\frac{\mu_l^k}{\rho_k}\right),0\right\}\right\|^2+
-\left\|\max\left\{x-\left(u-\frac{\mu_u^k}{\rho_k}\right),0\right\}\right\|^2\right)$$ at $x^{k+1}$, taken in the semismooth sense, namely, $H$ is a diagonal matrix with its $i$-th entry equal to $0$ if $l_i<x_i^{k+1}<u_i$ and equal to $\rho_k$ otherwise. \textcolor{red}{H é a Hessiana do pedaço que coloquei ou é sem o deslocamento mesmo? Se for com o deslocamento, a explicação de onde é zero tem que ser consertada}
+Let $Z=\left(\begin{array}{c} -id_{I_l}\\id_{I_u}\\A\end{array}\right)$ and $M=Z(Q+H)^{-1}Z^\mathtt{T}$, where $H$ is the hessian of $$\frac{\rho_k}{2}\left(\left\|\max\left\{-x+(l+\frac{\mu_l^k}{\rho_k}),0\right\}\right\|^2+
+\left\|\max\left\{x-(u-\frac{\mu_u^k}{\rho_k}),0\right\}\right\|^2\right)$$ at $x^{k+1}$, taken in the semismooth sense, namely, $H$ is a diagonal matrix with its $i$-th entry equal to $0$ if $l_i<x_i^{k+1}<u_i$ and equal to $\rho_k$ otherwise. \textcolor{red}{H é a Hessiana do pedaço que coloquei ou é sem o deslocamento mesmo? Se for com o deslocamento, a explicação de onde é zero tem que ser consertada}
 
-When $Q$ is diagonal and positive definite (separable and stricly convex problem), the expression for $M$ can be easily computed explicitly, and this is the case where we use the second-order update.
+When $Q$ is diagonal and positive definite (separable and stricly convex problem), the expression of $M$ can be easily computed explicitly.
 
 To update the Lagrange multiplier approximations $\mu^k_l$ and $\mu^k_u$, we solve the linear system \begin{equation}\label{sist2orderupdate}
 M\left(\begin{array}{c}d^1\\d^2\\d^3\end{array}\right)=\left(\begin{array}{c}l_{I_l}-x^{k+1}_{I_l}\\x^{k+1}_{I_u}-u_{I_u}\\b-Ax^{k+1}\end{array}\right),
 \end{equation}
-where $d^1\in\R^{|I_l|}, d^2\in\R^{|I_u|}$, and $d^3\in\R^m$. The notation $v_{I_l}\in\R^{|I_l|}$ corresponds to the vector with components $v_i, i\in I_l$ of the vector $v\in\R^n$. Similarly for $I_u$. We then define $[\mu_l^{k+1}]_{I_l}=\max\{0,[\mu_l^{k}]_{I_l}+d^1\}$ and $[\mu_u^{k+1}]_{I_u}=\max\{0,[\mu_u^{k}]_{I_u}+d^2\}$, keeping $[\mu_l^{k+1}]_i=[\mu_l^k]_i$ and $[\mu_u^{k+1}]_i=[\mu_u^k]_i$ for the remaining indexes. This is the standard second-order Lagrange multiplier update when considering that all constraints are penalized. However, by following the approach of \cite{yaxyuan} but considering constrained subproblems, we arrived at the same formula.
+where $d^1\in\R^{|I_l|}, d^2\in\R^{|I_u|}$, and $d^3\in\R^m$. The notation $v_{I_l}\in\R^{|I_l|}$ corresponds to the vector with components $v_i, i\in I_l$ of the vector $v\in\R^n$. Similarly for $I_u$. We then define $[\mu_l^{k+1}]_{I_l}=\max\{0,[\mu_l^{k}]_{I_l}+d^1_{I_l}\}$ and $[\mu_u^{k+1}]_{I_u}=\max\{0,[\mu_u^{k}]_{I_u}+d^2_{I_u}\}$, keeping $[\mu_l^{k+1}]_i=[\mu_l^k]_i$ and $[\mu_u^{k+1}]_i=[\mu_u^k]_i$ for the remaining indexes. This is the standard second-order Lagrange multiplier update when considering that all constraints are penalized. However, by following the approach of \cite{yaxyuan} but considering constrained subproblems, we arrived at the same formula.
 
 If $Q$ is not positive definite or the inverse of $Q+H$ is not easily computable, we use only the first-order update. This is the case, for example, in our linear programming tests. In our implementation we also used the first-order update if the solution of \eqref{sist2orderupdate} is not accurate.
 
 
-%\begin{color}{red}We say that a point is an approximated solution of an optimization problem if we can ensure that the 
-%KKT conditions holds with precision $\epsilon$. We stop Algorithm \ref{ALalg} with a fixed non negative precision.
-%Moreover, we require that the precison $\epsilon_k \in \R_+$, used in the subproblems, tends to zero when $k$ goes to infinite.
-%Since problem \eqref{PL} is convex,  when the algorithm stops at an iteration $k_0$,
-%we have an approximated solution of \eqref{PL}.\end{color}
+\begin{color}{red}proof of theorems... Quais???\end{color}
+
+\begin{color}{red}We say that a point is an approximated solution of an optimization problem if we can ensure that the 
+KKT conditions holds with precision $\epsilon$. We stop Algorithm \ref{ALalg} with a fixed non negative precision.
+Moreover, we require that the precison $\epsilon_k \in \R_+$, used in the subproblems, tends to zero when $k$ goes to infinite.
+Since problem \eqref{PL} is convex,  when the algorithm stops at an iteration $k_0$,
+we have an approximated solution of \eqref{PL}.\end{color}
 In order to analize the asymptotic behaviour of the algorithm, 
-we consider that it only stops at an iteration $k_0$ when an exact solution is found, that is, we consider $\varepsilon=0$ in the stopping criterion. Even in this case, we consider that an inifinite sequence is generated with $x^{k}=x^{k_0}$ for all $k > k_0$.
+we consider in the following results the case where  we ask for the
+exact solution in the stop criterion  and we declare that  $x^{k}=x^{k_0}$ for all $k \geq k_0$.
 
-In Augmented Lagrangian approaches where the box constraints $ l \leq x \leq
-u$ are not penalized, it is straightforward that the subproblems are well defined and
+In algorithms that use an Augmented Lagrangian approach with the
+standard choice to not penalize the constraints $ l \leq x \leq
+u$, it is straightforward that the subproblems are well defined and
 that the generated sequence remains in a compact set. The following
-lemmas ensure that these properties hold for Algorithm \ref{ALalg}, even though box constraints are not necessarily preserved. This is a consequence of dealing with quadratic convex problems. We start by showing well-definiteness:
+theorems ensure good definition of Algorithm \ref{ALalg} and also
+that the generated sequence lies in a compact even with the choice
+of not preserving the bound constraints. This is a consequence of dealing with quadratic convex problems.
 
-%\begin{lemma} \label{Lvaiinfinitosexvai}
-%The objective function of the subproblem
-%$L(x,\rho_k,\mu_l^k,\mu_u^k)$, as a function of $x$, tends to
-%infinity when the norm of $x$ goes to infinity.
-%\end{lemma}
-%
-%\noindent {\it Proof} Note that   $L(x,\rho_k,\mu_l^k,\mu_u^k)$ is a composition of a bounded below quadratic term  plus 
-%separable terms in relation to each of the variables. That is,
-%$$L(x,\rho_k,\mu_l^k,\mu_u^k)= \frac{1}{2}x^TQx+\sum_{i=1}^n L_i^k(x_i),$$
-%where
-%\begin{equation}\label{defLik}
-%L_i^k(x_i)=c_ix_i+\frac{\rho_k}{2}\left(\max\left\{l_i-x_i+\frac{[\mu_l^k]_i}{\rho_k},0\right\}^2+
-%\max\left\{x_i-u_i+\frac{[\mu_u^k]_i}{\rho_k},0\right\}^2\right).
-%\end{equation}
-%
-%
-%When $\|x\|$ tends to infinity we have that at least one
-% coordinate  of $x$ will have its absolute value arbitrarily large.
-%Thus, for these components, we have that $x_i<l_i$(and
-%hence smaller than $l_i+\frac{[\mu_l^k]_i}{\rho_k}$) or greater than
-%$u_i$.
-%
-%The functions $L_i^k(x_i)$ are strictly convex quadratics for
-%$|x_i|$ large enough. So we  have that $L_i^k(x_i)$ tends to
-%infinity when $|x_i|$ goes to infinity. If $|x_i|$ is bounded,  by continuity,
-%we have that $L_i^k(x_i)$ is also bounded, and so we have the sum
-%$\sum_{i=1^n} L_i^k(x_i)=L(x,\rho_k,\mu_l,\mu_u)$ is unbounded
-%superiorly when $\|x\|$ tends to infinity. Since $Q$ is semidefinite, the term $\frac{1}{2}x^TQx$ is bounded below by zero and so we have the desired result. \halmos
-
-\begin{lemma} \label{teobemdef} If $F \neq \emptyset$ then subproblem \eqref{subprobLA} is always well defined.
+\begin{lemma} \label{Lvaiinfinitosexvai}
+The objective function of the subproblem
+$L(x,\rho_k,\mu_l^k,\mu_u^k)$, as a function of $x$, tends to
+infinity when the norm of $x$ goes to infinity.
 \end{lemma}
 
-\noindent {\it Proof.} It is easy to see that the objective function of the subproblem, $x\mapsto L(x,\rho_k,\mu_l^k,\mu_u^k)$, tends to
-infinity when the norm of $x$ goes to infinity, that is, it is coercive, and the result follows from a well known existence result \cite{bertsekas}.\halmos
+\noindent {\it Proof} Note that   $L(x,\rho_k,\mu_l^k,\mu_u^k)$ is a composition of a bounded below quadratic term  plus 
+separable terms in relation to each of the variables. That is,
+$$L(x,\rho_k,\mu_l^k,\mu_u^k)= \frac{1}{2}x^TQx+\sum_{i=1}^n L_i^k(x_i),$$
+where
+\begin{equation}\label{defLik}
+L_i^k(x_i)=c_ix_i+\frac{\rho_k}{2}\left(\max\left\{l_i-x_i+\frac{[\mu_l^k]_i}{\rho_k},0\right\}^2+
+\max\left\{x_i-u_i+\frac{[\mu_u^k]_i}{\rho_k},0\right\}^2\right).
+\end{equation}
 
+
+When $\|x\|$ tends to infinity we have that at least one
+ coordinate  of $x$ will have the absolute value as large as we want.
+Thus, for these components, we have that $x_i<l_i$(and
+hence smaller than $l_i+\frac{[\mu_l^k]_i}{\rho_k}$) or greater than
+$u_i$.
+
+The functions $L_i^k(x_i)$ are strictly convex quadratics for
+$|x_i|$ large enough. So we  have that $L_i^k(x_i)$ tends to
+infinity when $|x_i|$ goes to infinity. If $|x_i|$ is bounded,  by continuity,
+we have that $L_i^k(x_i)$ is also bounded, and so we have the sum
+$\sum_{i=1^n} L_i^k(x_i)=L(x,\rho_k,\mu_l,\mu_u)$ is unbounded
+superiorly when $\|x\|$ tends to infinity. Since $Q$ is semidefinite, the term $\frac{1}{2}x^TQx$ is bounded below by zero and so we have the desired result. \halmos
+
+
+
+
+\begin{cor} \label{teobemdef} If $F \neq \emptyset$ then all the
+subproblems \eqref{subprobLA} are well defined.
+\end{cor}
+
+\noindent {\it Proof.} By Lemma \ref{Lvaiinfinitosexvai}, the function $x\mapsto L(x,\rho_k,\mu_l^k,\mu_u^k)$ is coercive, and the result follows.\halmos
 %Since the constraints $Ax=b$ are consistent,
 %there exist feasible points for the subproblem. We denote by
 %$\bar{x}$ one of these solutions.
@@ -291,15 +299,18 @@ infinity when the norm of $x$ goes to infinity, that is, it is coercive, and the
 %parameter $\rho_k$, and on the Lagrange multipliers estimates
 %$\mu_l^k$ and $\mu_u^k$. 
 The next result shows that it is actually
-possible to ensure that a sequence generated by Algorithm \ref{ALalg} lies in a compact set:
+possible to ensure that the solutions of the subproblems
+\eqref{subprobLA} lie on a bounded set that does not depend on $k$.
 
-\begin{lemma} \label{ficacompato} If $F \neq \emptyset$ then a sequence
-$\{x^k\}$ generated by Algorithm \ref{ALalg} lies in a compact
+\begin{lemma} \label{ficacompato} If $F \neq \emptyset$ then the sequence
+$\{x^k\}$ generated by the Algorithm \ref{ALalg} lies in a compact
 set.
 \end{lemma}
 
-\noindent {\it Proof.} By Lemma \ref{teobemdef}, the sequence $\{x^k\}$ is well defined. Let us show that
-there is a single compact set containing all iterands $x^k$.
+\noindent {\it Proof.} By Theorem \ref{teobemdef}, we have that the
+subproblems \eqref{subprobLA} are well defined. Let us show that
+there is a single compact set containing all the solutions of the
+subproblems.
 
 Suppose by contradiction that the sequence $\{x^k\}$ is unbounded.
 In this case there would be an index $i$ and an infinite set $K
@@ -309,16 +320,10 @@ $$\lim_{k \in K} x^k_i=- \infty \;\; \text{ or } \lim_{k \in K} x^k_i=
 Without loss of generality we assume that $\lim_{k \in K}
 x^k_1= \infty$.
 
-Let
-$$L(x,\rho_k,\mu_l^k,\mu_u^k)= \frac{1}{2}x^TQx+\sum_{i=1}^n L_i^k(x_i),$$
-where
-\begin{equation}\label{defLik}
-L_i^k(x_i)=c_ix_i+\frac{\rho_k}{2}\left(\max\left\{l_i-x_i+\frac{[\mu_l^k]_i}{\rho_k},0\right\}^2+
-\max\left\{x_i-u_i+\frac{[\mu_u^k]_i}{\rho_k},0\right\}^2\right).
-\end{equation}
 
 
-For each function $L_i^k(x_i)$ we have
+
+For each function $L_i^k(x_i)$, defined in \eqref{defLik}, we have
 that
 \begin{equation}\label{defLi}
 \begin{array}{ccl}
@@ -341,7 +346,7 @@ c_i u_i - \frac{c_i^2}{2\rho_0}, \; \text{ if } \; c_i\leq 0,
 \end{array}
 \right.
 \end{equation}
-it is bounded below. Thus,  there exists $\bar{L}$ such that $\bar{L} < \sum_{i=2}^n L_i^k(x_i)$.
+it is bounded below. Thus,  there exist $\bar{L}$ such that $\bar{L} < \sum_{i=2}^n L_i^k(x_i)$.
 
 Therefore,
 \begin{equation}\label{eq1xkcompacto}
@@ -387,24 +392,27 @@ So, if $x_1^k> \max\{u_1+ \sqrt{2 \bar{h}}, \hat{x}_1 \}$ then
 	&> &  \frac{1}{2} \bar{x}^T Q \bar{x}+ c^T\bar{x} + \frac{\rho_k}{2} \bar{h}+p\\
 	& \geq & L(\bar{x},\rho_k,\mu_l^k,\mu_u^k)+p.
 \end{eqnarray*}
-Since $p$ could be arbitrarily large, this contradicts  the fact that $x^k$ is an approximate minimizer of the subproblem. \halmos
+Since $p$ could be arbitrarily large, this contradicts  the fact that $x^k$ is an approximate minimizer of the subporoblem. \halmos
 
 
 
-We next recall the standard global convergence theory of Algorithm \ref{ALalg} as described in \cite{bmbook,abms}. The difference is that convexity implies that stationary points are global solutions. The main result is that every limit point of a sequence
-generated by the algorithm is a solution of the original problem \eqref{PL}, provided the feasible set is non-empty.
+The next theorem guarantees that every  limit point of the sequence
+generated by the algorithm converges to the solution of the original
+problem \eqref{PL}.
 
 
 \begin{theorem} \label{teoachasol} Assume that
-the feasible set of problem \eqref{PL} is non-empty, then every
-limit point of a sequence $\{x^k\}$ generated by Algorithm
-\ref{ALalg} is a solution of problem \eqref{PL}.
+the feasible set of the problem \eqref{PL} is not empty, then every
+limit point of the sequence $\{x^k\}$ generated by Algorithm
+\ref{ALalg} is a solution of the problem \eqref{PL}.
 \end{theorem}
 
-\noindent {\it Proof.} First, note that the linearity of the constraints trivially implies that the constant rank constraint qualification (CRCQ, \cite{crcq}) holds. In particular, weaker constraint qualifications such as CPLD \cite{cpld,rcpld}, CPG \cite{cpg} or CCP \cite{ccp} also hold.
+\noindent {\it Proof.} First, note that linear constraints satisfy
+the CRCQ \cite{crcq} or even more weak constraints qualifications
+such as  the CPLD \cite{cpld,rcpld}, CPG \cite{cpg} or the CCP \cite{ccp}.
 
 
-By \cite[Corollary 6.2]{abms} we have that  if $x^*$ is a
+By Corollary 6.2 of \cite{abms} we have that  if $x^*$ is a
 limit point of the sequence $\{x^k\}$ then it is a stationary point
 of the problem
 \begin{equation} \label{probviabil}
@@ -413,67 +421,69 @@ of the problem
 Ax=b.
 \end{equation}
 Since this problem is convex, we can ensure that $x^*$ is a global
-minimizer of \eqref{probviabil}. Thus, by the non-emptyness of the feasible set, $x^*$ is feasible for problem \eqref{PL}.
+minimizer of \eqref{probviabil}. Thus, if the original problem
+\eqref{PL} has nonempty feasible set, we have that $x^*$ is feasible
+for problem \eqref{PL}.
 
-Hence, by \cite[Corollary 6.1]{abms}, $x^*$ is stationary for \eqref{PL}. By convexity, $x^*$ is a solution of problem \eqref{PL}. \halmos
+Once $x^*$ is feasible for problem \eqref{PL}, by Corollary 6.1 of
+\cite{abms}, we have that $x^*$ is a stationarity point of
+\eqref{PL}. By the convexity of \eqref{PL}, we have that $x^*$ is in
+fact the solution of the original problem. \halmos
 
-Note that combining Lemma \ref{ficacompato} and Theorem \ref{teoachasol}, any sequence generated by the algorithm must have at least one limit point, which must be a solution of problem \eqref{PL}. Hence, one solution of the original problem is necessarily found by the algorithm. It is also a trivial consequence of Theorem \ref{teoachasol} that if problem \eqref{PL} has a unique solution, than a sequence generated by the algorithm is necessarily convergent to the solution.
+The next result shows that one of the solutions of the original
+problem \eqref{PL} is found by Algorithm \ref{ALalg}.
 
-%The next result shows that one of the solutions of the original
-%problem \eqref{PL} is found by Algorithm \ref{ALalg}.
-%
-%\begin{cor} \label{achsolPL}
-%  \emph{One of the solutions of the original problem
-%  \eqref{PL} is a limit point of $\{x^k\}$.}
-%\end{cor}
-%
-%\noindent {\it Proof.}  
-%By Lemma \ref{ficacompato} the sequence  $\{x^k\}$ has at least one
-%limit point, which, by Theorem \eqref{teoachasol}, is a solution of
-%problem \eqref{PL}. \halmos
-%
-%
-%\begin{cor} \label{convsolunica} 
-%\emph{If problem \eqref{PL} has a
-%unique solution $x^*$ the sequence $\{x^k\}$  converges to $x^*$.}
-%\end{cor}
-%
-%\noindent {\it Proof.}  
-%By Lemma \ref{ficacompato} the sequence  $\{x^k\}$ remains in a compact set.
-%By Theorem \ref{teoachasol} all the limit ponits of $\{x^k\}$ are solutions of \eqref{PL}. 
-%Once $x^*$ is the unique solution of \eqref{PL}, the sequence $\{x^k\}$  converges to $x^*$. \halmos
+\begin{cor} \label{achsolPL}
+  \emph{One of the solutions of the original problem
+  \eqref{PL} is a limit point of $\{x^k\}$.}
+\end{cor}
 
-We end this section by showing that the algorithm finds a solution in finite time provided that subproblems are solved exactly ($\varepsilon_k=0$ for all $k$) and that the sequence $\{x^k\}$ converges to a regular and strictly complementary solution. This is an interesting property of the augmented Lagrangian method that is not enjoyed by pure interior point methods, that is, results of this type are available for interior point methods only by the addition of particular procedures employed at the end of the execution. See \cite{bixby,vavasis,Ye1992}. Our results are similar to the finite termination of a Newton method for piecewise linear systems described in \cite{yunier}.
+\noindent {\it Proof.}  
+By Lemma \ref{ficacompato} the sequence  $\{x^k\}$ has at least one
+limit point, which, by Theorem \eqref{teoachasol}, is a solution of
+problem \eqref{PL}. \halmos
 
-%The next results shows that the whole sequence $\{x^k\}$ converges
-%to the solution in finite time if \eqref{PL} is a Linear Programming problem ($Q=0$) or a strictly convex Quadratic problem ($Q > 0$). For this purpose we need some
-%assumptions based on the concepts described as follows.
+
+\begin{cor} \label{convsolunica} 
+\emph{If problem \eqref{PL} has a
+unique solution $x^*$ the sequence $\{x^k\}$  converges to $x^*$.}
+\end{cor}
+
+\noindent {\it Proof.}  
+By Lemma \ref{ficacompato} the sequence  $\{x^k\}$ remains in a compact set.
+By Theorem \ref{teoachasol} all the limit ponits of $\{x^k\}$ are solutions of \eqref{PL}. 
+Once $x^*$ is the unique solution of \eqref{PL}, the sequence $\{x^k\}$  converges to $x^*$. \halmos
+
+The next results shows that the whole sequence $\{x^k\}$ converges
+to the solution in finite time if \eqref{PL} is a Linear Programming problem ($Q=0$) or a strictly convex Quadratic problem ($Q > 0$). For this purpose we need some
+assumptions based on the concepts described as follows.
 
 \begin{defi} \label{hipregular} Given $x \in \R^n$, let $I^l_x$ and $I^u_x$
 be matrices whose columns are the canonical vectors $e_i \in \R^n$
-such that $x_i=l_i$ and $x_i=u_i$, respectively. The point $x$ is
+such that $x_i=l_i$ or $x_i=u_i$, respectively. The point $x$ is
 said to be regular for problem \eqref{PL} if the columns of the
-matrix   $[A^T \,\,\, -I^l_x \,\,\, I^u_x]$ are linearly independent. Hence, a regular stationary point implies that there are unique $\lambda\in\R^m,\mu_l\in\R^n_+$ and $\mu_u\in\R^n_+$ that satisfy $$Qx+c+A^T \lambda- \mu_l+\mu_u=0,$$ with $[\mu_l]_i=0$ if $x_i>l_i$ and $[\mu_u]_i=0$ if $x_i<u_i$. A stationary point such that $[\mu_l]_i>0$ for all $i$ such that $x_i=l_i$ and $[\mu_u]_i> 0$ for all $i$ such that $x_i=u_i$ is said to satisfy strict complementarity.
+matrix   $[A^T \,\,\, -I^l_x \,\,\, I^u_x]$ are linearly independent.
 \end{defi}
 
-%\noindent{\bf Remark:} If  $x$ is a regular stationary point for the
-%problem \eqref{PL} there are unique $\mu_l$ and $\mu_u$ in $\R^n_+$
-%such that $[\mu_l]_i=0$ if $x_i>l_i$, $[\mu_u]_i=0$ if $x_i<u_i$,
-%and
-%$$Qx+c+A^T \lambda- \mu_l+\mu_u=0.$$
-%
-%\begin{defi} \label{hipcompestrita} We say that a stationary point $x \in \R^n$, for
-%which there  exist $\mu_l$ and $\mu_u$ such that
-%$$Qx+c+A^T \lambda -\mu_l+\mu_u=0,$$
-%satisfies the strict complementarity if $[\mu_l]_i>0$ for all $i$
-%such that $(x_i-l_i)=0$ and $[\mu_u]_i> 0$ for all $i$ such that
-%$(x_i-u_i)=0$.
-%\end{defi}
+\noindent\textbf{Remark:} If  $x$ is a regular stationary point for the
+problem \eqref{PL} there are unique $\mu_l$ and $\mu_u$ in $\R^n_+$
+such that $[\mu_l]_i=0$ if $x_i>l_i$, $[\mu_u]_i=0$ if $x_i<u_i$,
+and
+$$Qx+c+A^T \lambda- \mu_l+\mu_u=0.$$
+
+\begin{defi} \label{hipcompestrita} We say that a stationary point $x \in \R^n$, for
+which there  exist $\mu_l$ and $\mu_u$ such that
+$$Qx+c+A^T \lambda -\mu_l+\mu_u=0,$$
+satisfies the strict complementarity if $[\mu_l]_i>0$ for all $i$
+such that $(x_i-l_i)=0$ and $[\mu_u]_i> 0$ for all $i$ such that
+$(x_i-u_i)=0$.
+\end{defi}
 
 
 
 \begin{lemma} \label{LemaCompcertas} Assume that the sequence $\{x^k\}$ 
-converges to $x^*$ and that $x^*$ is a regular solution of  problem \eqref{PL}  that satisfies strict complementarity with $\mu_l^* <
+converges to $x^*$, which
+is a regular solution of  problem \eqref{PL}  and satisfies the strict complementarity  with $\mu_l^* <
 \mu_{max}$ and $\mu_u^* < \mu_{max}$. So, there
 exists $k_0 \in \N$ such that, for all $k \geq k_0$, $\mu^{k}_l>0 \Leftrightarrow
 \mu^*_l>0$, $\mu^{k}_u > 0 \Leftrightarrow \mu^*_u>0$,
@@ -497,12 +507,13 @@ x^*_i=l_i$ and
 $x^{k}_i>u_i-\frac{[\mu^{k}_u]_i}{\rho_{k}}\Leftrightarrow
 x^*_i=u_i$ for $k$ large enough. \halmos
 
-\begin{lemma} \label{convfinitaLA} Assume that subproblems \eqref{subprobLA} are solved exactly ($\varepsilon_k=0$ for all $k$),
-and that a sequence $\{x^k\}$ generated by Algorithm \ref{ALalg}
-converges to $x^*$, which is a regular solution of  problem \eqref{PL}  that satisfies strict complementarity with $\mu_l^* <
-\mu_{max}$ and $\mu_u^* < \mu_{max}$. Then, there exists $k_1$ such
+\begin{theorem} \label{convfinitaLA} Assume that the subproblems \eqref{subprobLA} are solved exactly,
+	the sequence $\{x^k\}$ 
+	converges to $x^*$, which
+	is a regular solution of  problem \eqref{PL}  and satisfies the strict complementarity  with $\mu_l^* <
+	\mu_{max}$ and $\mu_u^* < \mu_{max}$. So, there exists $k_1$ such
 	that $\mu^{k_1}_l=\mu_l^*$ and $\mu^{k_1}_u=\mu_u^*$.
-\end{lemma}
+\end{theorem}
 
 
 \noindent {\it Proof.}  
@@ -558,9 +569,9 @@ and
 $$\mu_u^{k_0+1}=\mu_u^*.$$ \halmos
 
 
-We are now ready to prove the finite convergence of the method:
 
-\begin{theorem} \label{convfinitaLA2} Assume that the subproblems \eqref{subprobLA} are solved exactly,
+
+\begin{theorem} \label{convfinitaLA} Assume that the subproblems \eqref{subprobLA} are solved exactly,
 the sequence $\{x^k\}$ 
 converges to $x^*$, which
 is a regular solution of  problem \eqref{PL}  and satisfies the strict complementarity  with $\mu_l^* <
@@ -582,20 +593,19 @@ A x^{k_0+1}=b.
 
 By the uniqueness of the solution of \eqref{multiplunicos} and Lemma \eqref{LemaCompcertas} we have that 
 $x^{k_0+1}_i=l_i \Leftrightarrow x^*_i=l_i$ and $x^{k_0+1}_i=u_i \Leftrightarrow x^*_i=u_i$. So
-$x^{k_0+1}$ is a KKT point for \eqref{PL} and thus it is a solution of \eqref{PL}.
+$x^{k_0+1}$ is a KKT point for \eqref{PL} and thus it is an solution of \eqref{PL}.
 \halmos
 
-Note that if problem \eqref{PL} has a unique solution and this solution is regular and satisfies strict complementarity, with $\mu_{max}$ sufficiently large, then the algorithm necessarily finds this solution in finite time.
 
-%\begin{cor} \label{convfinitasolunica}
-%  \emph{If  the subproblems \eqref{subprobLA} are solved exactly, the original problem
-%  \eqref{PL} has a unique solution and this solution is regular and satisfies the strict complementarity  with $\mu_l^* <
-%\mu_{max}$ and $\mu_u^* < \mu_{max}$, then Algorithm \ref{ALalg} finds
-%  the solution  in finite time.}
-%\end{cor}
-%\noindent {\it Proof.}  By Corollary \eqref{convsolunica} we have that $\{x^k\}$ converges to the solution.
-%Since the solution is regular and satisfies the strict complementarity  with $\mu_l^* <
-%\mu_{max}$ and $\mu_u^* < \mu_{max}$, we have, by Theorem \ref{convfinitaLA2}, that the convergence is finite. \halmos
+\begin{cor} \label{convfinitasolunica}
+  \emph{If  the subproblems \eqref{subprobLA} are solved exactly, the original problem
+  \eqref{PL} has a unique solution and this solution is regular and satisfies the strict complementarity  with $\mu_l^* <
+\mu_{max}$ and $\mu_u^* < \mu_{max}$, then Algorithm \ref{ALalg} finds
+  the solution  in finite time.}
+\end{cor}
+\noindent {\it Proof.}  By Corollary \eqref{convsolunica} we have that $\{x^k\}$ converges to the solution.
+Since the solution is regular and satisfies the strict complementarity  with $\mu_l^* <
+\mu_{max}$ and $\mu_u^* < \mu_{max}$, we have, by Theorem \ref{convfinitaLA}, that the convergence is finite. \halmos
 
 
 \section{Solving the subproblem}  \label{basicmethod}
@@ -904,7 +914,7 @@ for all $i$. So, by Theorem \ref{convfinitasubprob}, we have that the exact solu
 
 
 \begin{cor}
- Supose that $\alpha \leq \frac{1}{2}$, the original problem \eqref{PL} has a unique solution $x^*$, the regularity and the strict complementarity
+ Suppose that $\alpha \leq \frac{1}{2}$, the original problem \eqref{PL} has a unique solution $x^*$, the regularity and the strict complementarity
 holds on $x^*$ and that $\mu_l^* < \mu_{max}$ and $\mu_u^* < \mu_{max}$. So, the sequence $\{x^k\}$  generated by Agorithm 
 \ref{ALalg} employing Algorithm \ref{algsubprob} to solve the subproblems, converges to $x^*$ in finite time.
 \end{cor}
@@ -915,50 +925,89 @@ So, by Corollary \ref{convfinitasolunica}, we have that the Algorithm finds $x^*
 \section{Numerical experiments}
 \graphicspath{ {./figures/} }
 
-The goal of our numerical experiments is to show that this method is compatible with a simple implementation of a pure interior point method. We implemented the LAQP algorithm and the interior point method for convex quadratic programming as described in \cite{gondzio25} in Julia, using ***** for solving the linear systems. \textcolor{blue}{Acho que não precisamos dizer como resolvermos os Sistemas Lineares. LRS}
+The goal of our numerical experiments is to show that this method is compatible with a simple implementation of a pure interior point method. We implemented the LAQP algorithm (called \texttt{LAPQ}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}) in Julia~\cite{Bezanson:2017g}. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arises in both methods. 
+ 
 
-Our tests are based on the Netlib \cite{Dongarra:1987jk}  test set of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a quadratic term to the objective with Hessian equal to the identity matrix, in order to formulate strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
+Our tests are run on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
 
-We start by considering all 74 (out of 98) Netlib problems with less than \num{100000} non-zero entries in the matrix of constraints. We first decide which of four possible starting points provide better results in this collection, which are the following:\\
+We set the starting point using two steps. In the first step, we choose one of the four possible starting points candidates:
 
-\noindent{\tt New}: the one described in *****,\\
-{\tt Ones}: the vector of ones,\\
-{\tt OnesM}: the vector of ones followed by a Mehrotra-type update,\\
-{\tt Mehrotra}: the usual Mehrotra point.\\
+\begin{description}
+  \item[\texttt{New}:] in this novel approach $x^0$ is computed as the projection of the solution of   $\min \frac{1}{2}x^{T}Qx + c^Tx $, subject to $Ax=b$ into the box constraints. That is to say we are computing a solution of \eqref{PL} without the box constraints and then projecting it into those same restrictions. Next, we compute $\lambda^{0}$ as the solution of $A^{T}\lambda = -(Qx^{0}+c)$ and we define  $\mu_l^0=-\min\{0, \mu\}$  and
+$\mu_u^0=\max\{0,\mu\}$, where $\mu = -(Qx^{0}+c+A^{T}\lambda^{0})$;
 
- In the case of the interior point method, the initial point is projected to a sufficient interior of the box constraints. For the Lagrange multiplier update, we use a {\tt Hybrid} approach, which uses the second-order update only when the solution of the subproblem is within the same region as the current iterate, in the sense that the corresponding Hessians of the augmented Lagrangian function coincide. Otherwise, the first-order update is used. The performance profiles, computed in terms of the number of linear systems solved, are presented below, where for each algorithm all initial points are compared.
+
+\item [\texttt{Ones}:] we define $x^{0}$ and $\mu_l^0$ as the vector of ones and $\lambda^{0}$ and $\mu_u^0$ as the vector of zeros;
+
+\item [\texttt{Mehrotra}:] $x^{0}$, $\lambda^{0}$, $\mu_l^0$ and $\mu_u^0$ are computed by the usual Mehrotra-type heuristic~\cite{Mehrotra:1992wr};
+
+\item [\texttt{OnesM}:] $x^{0}$ is the vector of ones and $\lambda^{0}$, $\mu_l^0$  and $\mu_u^0$ are computed  by a Mehrotra-type update.
+
+
+\end{description}
+
+Independently of the choice above, the second step depends on the method: for \texttt{LAQP}, we perform a full Newton step to recover feasibility regarding $Ax=b$; for  \texttt{IPM}, we use the shifting strategy implemented by Mehrotra~\cite{Mehrotra:1992wr} to assure that the initial point is (sufficiently) in the interior of the box constraints. 
+
+We start by considering first all 62 (out of 98) \textsc{Netlib} problems with less than \num{10000} non-zero entries in the matrix of constraints in order to decide  which of four possible points provide better results in this collection, for each method.
+
+Moreover, for \texttt{LAQP}, we use a \texttt{Hybrid} approach, which uses the second-order update only when the solution of the subproblem is within the same region as the current iterate, in the sense that the corresponding Hessians of the augmented Lagrangian function coincide. Otherwise, the first-order update is used. The performance profiles, computed in terms of the number of linear systems solved, are presented below on \Cref{fig:PP-4points}, where for each algorithm all initial points are compared.
 
 %All initial points LAQP and IPM on the SMALL subset of Netlib (with Hybrid update?).
+\begin{figure}[!ht]\centering
+\begin{subfigure}[t]{.72\textwidth}
+\centering
+\includegraphics[width=\textwidth]{PP_IPM-4points}
+   \caption{}
+  \label{fig:PP_IPM-4points}
+  
+\end{subfigure} 
+\\
+   % \hspace*{.21in}  
+   \begin{subfigure}[t]{.72\textwidth}
+\centering
+\includegraphics[width=\textwidth]{PP_LAQPHybrid-4points}
+   \caption{}
+  \label{fig:PP_LAQPHybrid-4points}
 
-\includegraphics[scale=0.7]{PP_IPM-4points}
+\end{subfigure}
 
-\includegraphics[scale=0.7]{PP_LAQPHybrid-4points}
+\caption{Performance profiles of \texttt{IPM} and \texttt{LAQP-Hybrid} with each of the four initial points.}\label{fig:PP-4points}
+\end{figure}
 
-Based on these results, we decide to use {\tt Mehrotra} for the interior point method initial point and {\tt New} for the augmented Lagrangian method. The performance profile is presented below.
 
-%The same test on the SMALL subset
 
-\includegraphics[scale=0.7]{PP_LAQPNew-IPMMehrotra}
+Based on these results, we decide to use \texttt{Mehrotra}  as initial point for \texttt{IPM} and \texttt{New} for \texttt{LAQP}. The performance profile comparing those two results is presented in \Cref{fig:PP_LAQPNew-IPMMehrotra}.
 
-With the same two configurations, we perform a more thorough test on all 98 Netlib problems, modified in the same way as describe before. The corresponding performance profile is the following:
+%The same test on the SMALL subset{}
 
-%NEW initial point LAQP vs MEHROTRA IPM on all Netlib
+\begin{figure}[!ht]\centering
+\includegraphics[width=.72\textwidth]{PP_LAQPNew-IPMMehrotra}
+\caption{Performance profiles of \texttt{IPM-Mehrotra} and \texttt{LAQPHybrid-New}.}\label{fig:PP_LAQPNew-IPMMehrotra}
+\end{figure}
 
-\includegraphics[scale=0.7]{PP_LAQPNew-IPMMehrotra_All}
 
-We enphasize that our goal is to compare a pure interior point method versus the pure augmented Lagrangian method, without sophisticated accelerations and safeguards. This explains the overall poor behavior of both methods. We have observed that IPOPT, a well tuned interior point method, solves 95\% of the Netlib problems [?]. Note also that the Netlib problems are somewhat difficult ones, as, for instance, no strict interior exists on circa 65\% of the problems [?].
+With the same two configurations, we perform a more thorough test on all 98 \textsc{Netlib} problems, modified in the same way as describe before. The corresponding performance profile is on \Cref{fig:PP_LAQPNew-IPMMehrotra_All}.
+
+%NEW initial point LAQP vs MEHROTRA IPM on all \textsc{Netlib}
+\begin{figure}[!ht]\centering
+\includegraphics[width=.72\textwidth]{PP_LAQPNew-IPMMehrotra_All}
+\caption{Performance profiles of \texttt{IPM-Mehrotra} and \texttt{LAQPHybrid-New} for all 98 \textsc{Netlib} problems.}\label{fig:PP_LAQPNew-IPMMehrotra_All}
+\end{figure}
+
+
+We emphasize that our goal is to compare a pure interior point method versus the pure augmented Lagrangian method proposed, without sophisticated accelerations and safeguards. This explains the overall mildly poor behavior of both methods. For instance, IPOPT~\cite{Wachter:2005hk}, a well tuned interior point method, solves 56 of the 68 \texttt{small} problems of  \textsc{Netlib} collection when limited to 300 iterations~\cite{Haeser:2017wl}. Note also that the \textsc{Netlib} problems are somewhat difficult ones, as, for instance, no strict interior exists on circa 65\% of the problems [?].
 
 To analyze the behavior of both methods in more details, the figure below represents each problem on the horizontal axis, ordered in increasing size of non-zero entries in the constraints. An asterisk is marked when none of the solvers found a solution. A bar with a positive vertical coordinate indicates that LAQP was the best solver in terms of the number of linear systems solved, while a negative coordinate indicates that the interior point method was better. The size of the bar indicates ******. More precisely, the vertical coordinate is computed as *****.
 
-\includegraphics[scale=0.7]{Bar_LAQPNew-IPMMehrotra_All_2}
+\includegraphics[width=.72\textwidth]{Bar_LAQPNew-IPMMehrotra_All_2}
 
 %with the NEW initial point on LAQP, check that the second-order update is indeed better than the first-order one
 
-We now verify the efficacy of the {\tt Hybrid} strategy for updating the Lagrange multipliers. We compare it with the {\tt Linear} update, where the first-order update is used in every iteration, and the {\tt Dual} update, where the second-order update is always used.
+We now verify the efficacy of the \texttt{Hybrid} strategy for updating the Lagrange multipliers. We compare it with the \texttt{Linear} update, where the first-order update is used in every iteration, and the \texttt{Dual} update, where the second-order update is always used.
 
-\includegraphics[scale=0.7]{PP_LAQP_Dual-Linear-Hybrid}
+\includegraphics[width=.72\textwidth]{PP_LAQP_Dual-Linear-Hybrid}
 
-Based on these results, we conclude that the augmented Lagrangian method with the {\tt Hybrid} Lagrange multiplier update and the {\tt New} initial point had the best performance in our tests.
+Based on these results, we conclude that the augmented Lagrangian method with the \texttt{Hybrid} Lagrange multiplier update and the \texttt{New} initial point had the best performance in our tests.
 
 \begin{color}{red}Rejected pictures:\end{color}
 
@@ -968,7 +1017,7 @@ Based on these results, we conclude that the augmented Lagrangian method with th
 
 \includegraphics[scale=0.3]{PP_LAQP-4points}
 
-We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test on the whole (modified) Netlib test set and we select only the ***** problems where both solvers were successful. Then, for each solver, we consider a new run of these problems by taking as the initial point a perturbation of the solution found by the respective solver. That is, the initial point $x^0$ is given by *****. In the case of the interior point method we additionally project it onto a strict interior. The corresponding performance profile is presented below.
+We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test on the whole (modified) \textsc{Netlib} test set and we select only the ***** problems where both solvers were successful. Then, for each solver, we consider a new run of these problems by taking as the initial point a perturbation of the solution found by the respective solver. That is, the initial point $x^0$ is given by *****. In the case of the interior point method we additionally project it onto a strict interior. The corresponding performance profile is presented below.
 
 \begin{color}{red}Tests we have not run yet:
 
@@ -1002,6 +1051,6 @@ de pontos interiores ou no método simplex.
 
 \printbibliography
 % \bibliographystyle{plain}
- %\bibliography{biblio}
+% \bibliography{biblio}
 
 \end{document}
