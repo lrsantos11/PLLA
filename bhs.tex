@@ -993,19 +993,21 @@ r_i = \frac{\#S_{\mathtt{IPM-Mehrotra}}^{i} - \#S_{\mathtt{LAQPHybrid-New}}^{i} 
 
 %with the NEW initial point on LAQP, check that the second-order update is indeed better than the first-order one
 
-We now verify the efficacy of the \texttt{Hybrid} strategy for updating the Lagrange multipliers. We compare it with the \texttt{Linear} update, where the first-order update is used in every iteration, and the \texttt{Dual} update, where the second-order update is always used.
-
+We now verify, on \Cref{fig:PP_LAQP_Dual-Linear-Hybrid}, the efficacy of the \texttt{Hybrid} strategy for updating the Lagrange multipliers. We compare it with the \texttt{Linear} update, where the first-order update is used in every iteration, and the \texttt{Dual} update, where the second-order update is always used.
+\begin{figure}[!ht]\centering
 \includegraphics[width=.72\textwidth]{PP_LAQP_Dual-Linear-Hybrid}
-
+\caption{Performance profile for  \texttt{LAQPHybrid-New}, \texttt{LAQPLinear-New} and   \texttt{LAQPDual-New}.}
+\label{fig:PP_LAQP_Dual-Linear-Hybrid}
+\end{figure}
 Based on these results, we conclude that the augmented Lagrangian method with the \texttt{Hybrid} Lagrange multiplier update and the \texttt{New} initial point had the best performance in our tests.
 
-\begin{color}{red}Rejected pictures:\end{color}
+% \begin{color}{red}Rejected pictures:\end{color}
 
-\includegraphics[scale=0.3]{PP_LAQP_Linear-Hybrid}
+% \includegraphics[scale=0.3]{PP_LAQP_Linear-Hybrid}
 
-\includegraphics[scale=0.3]{PP_LAQPLinear-4points}
+% \includegraphics[scale=0.3]{PP_LAQPLinear-4points}
 
-\includegraphics[scale=0.3]{PP_LAQP-4points}
+% \includegraphics[scale=0.3]{PP_LAQP-4points}
 
 We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test on the whole (modified) \textsc{Netlib} test set and we select only the ***** problems where both solvers were successful. Then, for each solver, we consider a new run of these problems by taking as the initial point a perturbation of the solution found by the respective solver. That is, the initial point $x^0$ is given by *****. In the case of the interior point method we additionally project it onto a strict interior. The corresponding performance profile is presented below.
 
