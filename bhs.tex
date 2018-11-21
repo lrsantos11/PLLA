@@ -63,7 +63,7 @@
 
 \begin{abstract}
 
-Interior point methods have attracted most of the attention in the recent decades for solving large scale convex quadratic programming problems. In this paper we take a different route as we present a penalty method for convex quadratic programming based on recent augmented Lagrangian developments for nonlinear programming. The motivation of this approach is that Newton Method can be efficient for minimizing a piecewise quadratic function. Moreover, since penalty methods do not rely on proximity to the central path, some of the inherent difficulties in interior point methods can be avoided. Also, a good starting point can be easily exploited, which can be relevant for solving subproblems arising from sequential quadratic programming. Some theoretical results on linear programming and strictly convex programming are presented. Numerical experiments on strictly convex quadratic problems formulated from the Netlib collection show that our method can be competitive with interior point methods, which suggests that more research on penalty methods should be conducted.\\
+Interior point methods have attracted most of the attention in the recent decades for solving large scale convex quadratic programming problems. In this paper we take a different route as we present a penalty method for convex quadratic programming based on recent augmented Lagrangian developments for nonlinear programming. The motivation of this approach is that Newton Method can be efficient for minimizing a piecewise quadratic function. Moreover, since penalty methods do not rely on proximity to the central path, some of the inherent difficulties in interior point methods can be avoided. Also, a good starting point can be easily exploited, which can be relevant for solving subproblems arising from sequential quadratic programming. Some theoretical results on linear programming and strictly convex programming are presented. Numerical experiments on strictly convex quadratic problems formulated from the \textsc{Netlib} collection show that our method can be competitive with interior point methods, which suggests that more research on penalty methods should be conducted.\\
 
 \noindent {\bf Key words:} Linear programming, convex quadratic programming, augmented Lagrangian, penalty methods, interior point methods\\
 
@@ -933,7 +933,7 @@ We start by considering first all 62 (out of 98) \textsc{Netlib} problems with l
 
 Moreover, for \texttt{LAQP}, we use a \texttt{Hybrid} approach, which uses the second-order update only when the solution of the subproblem is within the same region as the current iterate, in the sense that the corresponding Hessians of the augmented Lagrangian function coincide. Otherwise, the first-order update is used. The performance profiles, computed in terms of the number of linear systems solved, are presented below on \Cref{fig:PP-4points}, where for each algorithm all initial points are compared.
 
-%All initial points LAQP and IPM on the SMALL subset of Netlib (with Hybrid update?).
+%All initial points LAQP and IPM on the SMALL subset of \textsc{Netlib} (with Hybrid update?).
 \begin{figure}[!ht]\centering
 \begin{subfigure}[t]{.72\textwidth}
 \centering
@@ -998,7 +998,7 @@ Based on these results, we conclude that the augmented Lagrangian method with th
 
 \includegraphics[scale=0.3]{PP_LAQP-4points}
 
-We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test on the whole (modified) Netlib test set and we select only the ***** problems where both solvers were successful. Then, for each solver, we consider a new run of these problems by taking as the initial point a perturbation of the solution found by the respective solver. That is, the initial point $x^0$ is given by *****. In the case of the interior point method we additionally project it onto a strict interior. The corresponding performance profile is presented below.
+We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test on the whole (modified) \textsc{Netlib} test set and we select only the ***** problems where both solvers were successful. Then, for each solver, we consider a new run of these problems by taking as the initial point a perturbation of the solution found by the respective solver. That is, the initial point $x^0$ is given by *****. In the case of the interior point method we additionally project it onto a strict interior. The corresponding performance profile is presented below.
 
 \begin{color}{red}Tests we have not run yet:
 
