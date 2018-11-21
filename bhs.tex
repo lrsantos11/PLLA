@@ -982,7 +982,7 @@ To analyze the behavior of both methods more carefully, \Cref{fig:Bar_LAQPNew-IP
 \[
 r_i = \frac{\#S_{\mathtt{IPM-Mehrotra}}^{i} - \#S_{\mathtt{LAQPHybrid-New}}^{i} }
 {\max\{ \#S_{\mathtt{IPM-Mehrotra}}^{i} , \#S_{\mathtt{LAQPHybrid-New}}^{i} \}},
-\] where $\#S_{j}^{i}$ is the number of linear systems used by solver $j$ to solve problem $i$. For instance, if $r_i = 0.8$ that means \texttt{LAQPHybrid-New} was 80\% better, in the sense that \texttt{IPM-Mehrotra} solved $5$ times more linear systems than \texttt{LAQPHybrid-New} on problem $i$ and the bar points upwards, while $r_i = -0.3$ indicates that \texttt{IPM-Mehrotra} was 30\% better on problem $i$, i.e., \texttt{LAQPHybrid-New} solved $10/7$ times more linear systems than \texttt{IPM-Mehrotra} and the bar points downwards. If only one solver found a solution $r_i$ is either $1.0$ or $-1.0$ and a red cross is marked when none of the solvers found a solution. 
+\] where $\#S_{j}^{i}$ is the number of linear systems used by solver $j$ to solve problem $i$. For instance, if $r_i = 0.8$ that means \texttt{LAQPHybrid-New} was 80\% better, in the sense that \texttt{IPM-Mehrotra} solved $5$ times more linear systems than \texttt{LAQPHybrid-New} on problem $i$ and the bar points upwards, while $r_i = -0.3$ indicates that \texttt{IPM-Mehrotra} was 30\% better on problem $i$, i.e., \texttt{LAQPHybrid-New} solved $10/7$ times more linear systems than \texttt{IPM-Mehrotra} and the bar points downwards. If only one solver found a solution, $r_i$ is either $1.0$ or $-1.0$, and a red cross is marked when none of the solvers found a solution. 
 
 % BAR graphic
 \begin{figure}[!ht]\centering
