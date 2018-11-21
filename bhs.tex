@@ -921,7 +921,7 @@ $\mu_u^0=\max\{0,\mu\}$, with $\mu = -(Qx^{0}+c+A^{T}\lambda^{0})$;
 
 \item [\texttt{Mehrotra}:] $x^{0}$, $\lambda^{0}$, $\mu_l^0$ and $\mu_u^0$ are computed by the usual Mehrotra-type heuristic~\cite{Mehrotra:1992wr};
 
-\item [\texttt{OnesM}:] $x^{0}$ is the vector of ones and $\lambda^{0}$, $\mu_l^0$  and $\mu_u^0$ are computed  by a Mehrotra-type update.
+\item [\texttt{OnesM}:] we define $x^{0}$ as the vector of ones, $\mu_l^0 = Qx^{0}+c +\beta I$, where $\beta>0$ is such that $\mu_l^0$ is sufficiently interior,  $\lambda^{0}$ is computed as the least squares solution of $A^{T}\lambda = -(Qx^{0}+c-\mu_l^0)$,  and $\mu_u^0$ is the vector of zeros.
 
 
 \end{description}
@@ -967,7 +967,7 @@ Based on these results, we decide to use \texttt{Mehrotra}  as initial point for
 \end{figure}
 
 
-With the same two configurations, we perform a more thorough test on all 98 \textsc{Netlib} problems, modified in the same way as describe before. The corresponding performance profile is on \Cref{fig:PP_LAQPNew-IPMMehrotra_All}.
+With the same two configurations, we perform a more thorough test on all 95 available \textsc{Netlib} problems, modified in the same way as describe before. The corresponding performance profile is on \Cref{fig:PP_LAQPNew-IPMMehrotra_All}.
 
 %NEW initial point LAQP vs MEHROTRA IPM on all \textsc{Netlib}
 \begin{figure}[!ht]\centering
@@ -988,7 +988,7 @@ r_i = \frac{\#S_{\mathtt{IPM-Mehrotra}}^{i} - \#S_{\mathtt{LAQPHybrid-New}}^{i} 
 % BAR graphic
 \begin{figure}[!ht]\centering
 \includegraphics[width=.72\textwidth]{Bar_LAQPNew-IPMMehrotra_All_2}
-\caption{Ratio of performance of \texttt{LAQPHybrid-New} and \texttt{IPM-Mehrotra}.}
+\caption{Ratio of performance between \texttt{LAQPHybrid-New} and \texttt{IPM-Mehrotra}.}
 \label{fig:Bar_LAQPNew-IPMMehrotra_All_2}
 \end{figure}
 
