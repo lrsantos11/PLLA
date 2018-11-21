@@ -913,8 +913,8 @@ Our tests are based on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collectio
 We set the starting point using two steps. In the first step, we choose one of the four possible starting points candidates:
 
 \begin{description}
-  \item[\texttt{New}:] in this novel approach $x^0$ is computed as the projection of the solution of   $\min \frac{1}{2}x^{T}Qx + c^Tx $, subject to $Ax=b$ into the box constraints. That is to say we are computing a solution of \eqref{PL} without the box constraints and then projecting it into those same restrictions. Next, we compute $\lambda^{0}$ as the solution of $A^{T}\lambda = -(Qx^{0}+c)$ and we define  $\mu_l^0=-\min\{0, \mu\}$  and
-$\mu_u^0=\max\{0,\mu\}$, where $\mu = -(Qx^{0}+c+A^{T}\lambda^{0})$;
+  \item[\texttt{New}:] in this approach, $x^0$ is computed as the projection of the solution of  $\min \frac{1}{2}x^{T}Qx + c^Tx $, subject to $Ax=b$, onto the box constraints. That is, a solution of \eqref{PL} ignoring the box constraints is computed and then projected onto the box constraints. Next, $\lambda^{0}$ is computed as the least squares solution of $A^{T}\lambda = -(Qx^{0}+c)$, while  $\mu_l^0=-\min\{0, \mu\}$  and
+$\mu_u^0=\max\{0,\mu\}$, with $\mu = -(Qx^{0}+c+A^{T}\lambda^{0})$;
 
 
 \item [\texttt{Ones}:] we define $x^{0}$ and $\mu_l^0$ as the vector of ones and $\lambda^{0}$ and $\mu_u^0$ as the vector of zeros;
@@ -926,7 +926,7 @@ $\mu_u^0=\max\{0,\mu\}$, where $\mu = -(Qx^{0}+c+A^{T}\lambda^{0})$;
 
 \end{description}
 
-Independently of the choice above, the second step depends on the method: for \texttt{LAQP}, we perform a full Newton step to recover feasibility regarding $Ax=b$; for  \texttt{IPM}, we use the shifting strategy implemented by Mehrotra~\cite{Mehrotra:1992wr} to assure that the initial point is (sufficiently) in the interior of the box constraints. 
+Independently of the choice above, the second step depends on the method: for \texttt{LAQP}, we perform a full Newton step to recover feasibility regarding $Ax=b$; for  \texttt{IPM}, we use the shifting strategy implemented by Mehrotra~\cite{Mehrotra:1992wr} to assure that the initial point is (sufficiently) interior with respect to the box constraints. 
 
 We start by considering 62 (out of 98) \textsc{Netlib} problems with less than \num{10000} non-zero elements in the matrix of constraints\footnote{There are 65 of such problems in \textsc{Netlib}, however presolved versions of \texttt{forplan, gfrd-pnc} and \texttt{pilot.we} were not available in \cite{HagerCoapSoftware}.} in order to decide  which of those aforementioned four possible initial points provide better numerical results, for each method.
 
