@@ -906,50 +906,89 @@ So, by Corollary \ref{convfinitasolunica}, we have that the Algorithm finds $x^*
 \section{Numerical experiments}
 \graphicspath{ {./figures/} }
 
-The goal of our numerical experiments is to show that this method is compatible with a simple implementation of a pure interior point method. We implemented the LAQP algorithm and the interior point method for convex quadratic programming as described in \cite{gondzio25} in Julia, using ***** for solving the linear systems. \textcolor{blue}{Acho que não precisamos dizer como resolvermos os Sistemas Lineares. LRS}
+The goal of our numerical experiments is to show that this method is compatible with a simple implementation of a pure interior point method. We implemented the LAQP algorithm (called \texttt{LAPQ}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}) in Julia~\cite{Bezanson:2017g}. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arises in both methods. 
+ 
 
-Our tests are based on the Netlib \cite{Dongarra:1987jk}  test set of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a quadratic term to the objective with Hessian equal to the identity matrix, in order to formulate strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
+Our tests are run on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
 
-We start by considering all 74 (out of 98) Netlib problems with less than \num{100000} non-zero entries in the matrix of constraints. We first decide which of four possible starting points provide better results in this collection, which are the following:\\
+We set the starting point using two steps. In the first step, we choose one of the four possible starting points candidates:
 
-\noindent{\tt New}: the one described in *****,\\
-{\tt Ones}: the vector of ones,\\
-{\tt OnesM}: the vector of ones followed by a Mehrotra-type update,\\
-{\tt Mehrotra}: the usual Mehrotra point.\\
+\begin{description}
+  \item[\texttt{New}:] in this novel approach $x^0$ is computed as the projection of the solution of   $\min \frac{1}{2}x^{T}Qx + c^Tx $, subject to $Ax=b$ into the box constraints. That is to say we are computing a solution of \eqref{PL} without the box constraints and then projecting it into those same restrictions. Next, we compute $\lambda^{0}$ as the solution of $A^{T}\lambda = -(Qx^{0}+c)$ and we define  $\mu_l^0=-\min\{0, \mu\}$  and
+$\mu_u^0=\max\{0,\mu\}$, where $\mu = -(Qx^{0}+c+A^{T}\lambda^{0})$;
 
- In the case of the interior point method, the initial point is projected to a sufficient interior of the box constraints. For the Lagrange multiplier update, we use a {\tt Hybrid} approach, which uses the second-order update only when the solution of the subproblem is within the same region as the current iterate, in the sense that the corresponding Hessians of the augmented Lagrangian function coincide. Otherwise, the first-order update is used. The performance profiles, computed in terms of the number of linear systems solved, are presented below, where for each algorithm all initial points are compared.
+
+\item [\texttt{Ones}:] we define $x^{0}$ and $\mu_l^0$ as the vector of ones and $\lambda^{0}$ and $\mu_u^0$ as the vector of zeros;
+
+\item [\texttt{Mehrotra}:] $x^{0}$, $\lambda^{0}$, $\mu_l^0$ and $\mu_u^0$ are computed by the usual Mehrotra-type heuristic~\cite{Mehrotra:1992wr};
+
+\item [\texttt{OnesM}:] $x^{0}$ is the vector of ones and $\lambda^{0}$, $\mu_l^0$  and $\mu_u^0$ are computed  by a Mehrotra-type update.
+
+
+\end{description}
+
+Independently of the choice above, the second step depends on the method: for \texttt{LAQP}, we perform a full Newton step to recover feasibility regarding $Ax=b$; for  \texttt{IPM}, we use the shifting strategy implemented by Mehrotra~\cite{Mehrotra:1992wr} to assure that the initial point is (sufficiently) in the interior of the box constraints. 
+
+We start by considering first all 62 (out of 98) \textsc{Netlib} problems with less than \num{10000} non-zero entries in the matrix of constraints in order to decide  which of four possible points provide better results in this collection, for each method.
+
+Moreover, for \texttt{LAQP}, we use a \texttt{Hybrid} approach, which uses the second-order update only when the solution of the subproblem is within the same region as the current iterate, in the sense that the corresponding Hessians of the augmented Lagrangian function coincide. Otherwise, the first-order update is used. The performance profiles, computed in terms of the number of linear systems solved, are presented below on \Cref{fig:PP-4points}, where for each algorithm all initial points are compared.
 
 %All initial points LAQP and IPM on the SMALL subset of Netlib (with Hybrid update?).
+\begin{figure}[!ht]\centering
+\begin{subfigure}[t]{.72\textwidth}
+\centering
+\includegraphics[width=\textwidth]{PP_IPM-4points}
+   \caption{}
+  \label{fig:PP_IPM-4points}
+  
+\end{subfigure} 
+\\
+   % \hspace*{.21in}  
+   \begin{subfigure}[t]{.72\textwidth}
+\centering
+\includegraphics[width=\textwidth]{PP_LAQPHybrid-4points}
+   \caption{}
+  \label{fig:PP_LAQPHybrid-4points}
 
-\includegraphics[scale=0.7]{PP_IPM-4points}
+\end{subfigure}
 
-\includegraphics[scale=0.7]{PP_LAQPHybrid-4points}
+\caption{Performance profiles of \texttt{IPM} and \texttt{LAQP-Hybrid} with each of the four initial points.}\label{fig:PP-4points}
+\end{figure}
 
-Based on these results, we decide to use {\tt Mehrotra} for the interior point method initial point and {\tt New} for the augmented Lagrangian method. The performance profile is presented below.
 
-%The same test on the SMALL subset
 
-\includegraphics[scale=0.7]{PP_LAQPNew-IPMMehrotra}
+Based on these results, we decide to use \texttt{Mehrotra}  as initial point for \texttt{IPM} and \texttt{New} for \texttt{LAQP}. The performance profile comparing those two results is presented in \Cref{fig:PP_LAQPNew-IPMMehrotra}.
 
-With the same two configurations, we perform a more thorough test on all 98 Netlib problems, modified in the same way as describe before. The corresponding performance profile is the following:
+%The same test on the SMALL subset{}
 
-%NEW initial point LAQP vs MEHROTRA IPM on all Netlib
+\begin{figure}[!ht]\centering
+\includegraphics[width=.72\textwidth]{PP_LAQPNew-IPMMehrotra}
+\caption{Performance profiles of \texttt{IPM-Mehrotra} and \texttt{LAQPHybrid-New}.}\label{fig:PP_LAQPNew-IPMMehrotra}
+\end{figure}
 
-\includegraphics[scale=0.7]{PP_LAQPNew-IPMMehrotra_All}
 
-We enphasize that our goal is to compare a pure interior point method versus the pure augmented Lagrangian method, without sophisticated accelerations and safeguards. This explains the overall poor behavior of both methods. We have observed that IPOPT, a well tuned interior point method, solves 95\% of the Netlib problems [?]. Note also that the Netlib problems are somewhat difficult ones, as, for instance, no strict interior exists on circa 65\% of the problems [?].
+With the same two configurations, we perform a more thorough test on all 98 \textsc{Netlib} problems, modified in the same way as describe before. The corresponding performance profile is on \Cref{fig:PP_LAQPNew-IPMMehrotra_All}.
+
+%NEW initial point LAQP vs MEHROTRA IPM on all \textsc{Netlib}
+\begin{figure}[!ht]\centering
+\includegraphics[width=.72\textwidth]{PP_LAQPNew-IPMMehrotra_All}
+\caption{Performance profiles of \texttt{IPM-Mehrotra} and \texttt{LAQPHybrid-New} for all 98 \textsc{Netlib} problems.}\label{fig:PP_LAQPNew-IPMMehrotra_All}
+\end{figure}
+
+
+We emphasize that our goal is to compare a pure interior point method versus the pure augmented Lagrangian method proposed, without sophisticated accelerations and safeguards. This explains the overall mildly poor behavior of both methods. For instance, IPOPT~\cite{Wachter:2005hk}, a well tuned interior point method, solves 56 of the 68 \texttt{small} problems of  \textsc{Netlib} collection when limited to 300 iterations~\cite{Haeser:2017wl}. Note also that the \textsc{Netlib} problems are somewhat difficult ones, as, for instance, no strict interior exists on circa 65\% of the problems [?].
 
 To analyze the behavior of both methods in more details, the figure below represents each problem on the horizontal axis, ordered in increasing size of non-zero entries in the constraints. An asterisk is marked when none of the solvers found a solution. A bar with a positive vertical coordinate indicates that LAQP was the best solver in terms of the number of linear systems solved, while a negative coordinate indicates that the interior point method was better. The size of the bar indicates ******. More precisely, the vertical coordinate is computed as *****.
 
-\includegraphics[scale=0.7]{Bar_LAQPNew-IPMMehrotra_All_2}
+\includegraphics[width=.72\textwidth]{Bar_LAQPNew-IPMMehrotra_All_2}
 
 %with the NEW initial point on LAQP, check that the second-order update is indeed better than the first-order one
 
-We now verify the efficacy of the {\tt Hybrid} strategy for updating the Lagrange multipliers. We compare it with the {\tt Linear} update, where the first-order update is used in every iteration, and the {\tt Dual} update, where the second-order update is always used.
+We now verify the efficacy of the \texttt{Hybrid} strategy for updating the Lagrange multipliers. We compare it with the \texttt{Linear} update, where the first-order update is used in every iteration, and the \texttt{Dual} update, where the second-order update is always used.
 
-\includegraphics[scale=0.7]{PP_LAQP_Dual-Linear-Hybrid}
+\includegraphics[width=.72\textwidth]{PP_LAQP_Dual-Linear-Hybrid}
 
-Based on these results, we conclude that the augmented Lagrangian method with the {\tt Hybrid} Lagrange multiplier update and the {\tt New} initial point had the best performance in our tests.
+Based on these results, we conclude that the augmented Lagrangian method with the \texttt{Hybrid} Lagrange multiplier update and the \texttt{New} initial point had the best performance in our tests.
 
 \begin{color}{red}Rejected pictures:\end{color}
 
