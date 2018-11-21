@@ -207,7 +207,7 @@ We will consider two options for the Lagrange multiplier update in Step 3. The f
 
 
 
-Our second-order Lagrange multiplier update is used when dealing with separable strictly convex quadratic problems. The update formula is obtained according to the ideas presented in \cite{yaxyuan}. For this purpose we need to introduce a notation to refer to the coordinates associated with the active box constraints at a point $x^{k+1}$, as well as with parts of vectors and matrices corresponding to these coordinates. Let $I_l=\{i: x^{k+1}_i\leq l_i\}$ and $I_u=\{i: x^{k+1}_i\geq u\}$ be the indexes of active or infeasible box constraints. Let us define $\mathcal{I}_{I_l}$  as the $|I_l|\times n$ matrix formed by the $i$-th line of the $n\times n$ identity, $i\in I_l$. Similarly we define $\mathcal{I}_{I_u}$. 
+Our second-order Lagrange multiplier update is used when dealing with separable strictly convex quadratic problems. The update formula is obtained according to the ideas presented in \cite{yaxyuan,bertsekas,buys}. For this purpose we need to introduce a notation to refer to the coordinates associated with the active box constraints at a point $x^{k+1}$, as well as with parts of vectors and matrices corresponding to these coordinates. Let $I_l=\{i: x^{k+1}_i\leq l_i\}$ and $I_u=\{i: x^{k+1}_i\geq u\}$ be the indexes of active or infeasible box constraints. Let us define $\mathcal{I}_{I_l}$  as the $|I_l|\times n$ matrix formed by the $i$-th line of the $n\times n$ identity, $i\in I_l$. Similarly we define $\mathcal{I}_{I_u}$. 
 
 Let $Z=\left(\begin{array}{c} -\mathcal{I}_{I_l}\\\mathcal{I}_{I_u}\\A\end{array}\right)$ and $M=Z(Q+H)^{-1}Z^\mathtt{T}$, where $H$ is the Hessian of $$\frac{\rho_k}{2}\left(\left\|\max\left\{-x+\left(l+\frac{\mu_l^k}{\rho_k}\right),0\right\}\right\|^2+
 \left\|\max\left\{x-\left(u-\frac{\mu_u^k}{\rho_k}\right),0\right\}\right\|^2\right)$$ at $x^{k+1}$, taken in the semismooth sense, namely, $H$ is a diagonal matrix with its $i$-th entry equal to $0$ if $l_i<x_i^{k+1}<u_i$ and equal to $\rho_k$ otherwise. \textcolor{red}{H é a Hessiana do pedaço que coloquei ou é sem o deslocamento mesmo? Se for com o deslocamento, a explicação de onde é zero tem que ser consertada}
@@ -444,7 +444,7 @@ We end this section by showing that the algorithm finds a solution in finite tim
 be matrices whose columns are the canonical vectors $e_i \in \R^n$
 such that $x_i=l_i$ and $x_i=u_i$, respectively. The point $x$ is
 said to be regular for problem \eqref{PL} if the columns of the
-matrix   $[A^T \,\,\, -I^l_x \,\,\, I^u_x]$ are linearly independent. Hence, a regular stationary point implies that there are unique $\lambda\in\R^m,\mu_l\in\R^n_+$ and $\mu_u\in\R^n_+$ that satisfy $$Qx+c+A^T \lambda- \mu_l+\mu_u=0,$$ with $[\mu_l]_i=0$ if $x_i>l_i$ and $[\mu_u]_i=0$ if $x_i<u_i$. A stationary point such that $[\mu_l]_i>0$ for all $i$ such that $x_i=l_i$ and $[\mu_u]_i> 0$ for all $i$ such that $x_i=u_i$ is said to satisfy strict complementarity.
+matrix   $[A^T \,\,\, -I^l_x \,\,\, I^u_x]$ are linearly independent. Hence, a regular stationary point implies that there are unique $\lambda\in\R^m,\mu_l\in\R^n_+$ and $\mu_u\in\R^n_+$ that satisfy $$Qx+c+A^T \lambda- \mu_l+\mu_u=0,$$ with $[\mu_l]_i=0$ if $x_i>l_i$ and $[\mu_u]_i=0$ if $x_i<u_i$. A stationary point such that $[\mu_l]_i>0$ for all $i$ such that $x_i=l_i$, and $[\mu_u]_i> 0$ for all $i$ such that $x_i=u_i$ is said to satisfy strict complementarity.
 \end{defi}
 
 %\noindent{\bf Remark:} If  $x$ is a regular stationary point for the
@@ -465,7 +465,7 @@ matrix   $[A^T \,\,\, -I^l_x \,\,\, I^u_x]$ are linearly independent. Hence, a r
 
 \begin{lemma} \label{LemaCompcertas} Assume that the sequence $\{x^k\}$ 
 converges to $x^*$ and that $x^*$ is a regular solution of  problem \eqref{PL}  that satisfies strict complementarity with $\mu_l^* <
-\mu_{max}$ and $\mu_u^* < \mu_{max}$. So, there
+\mu_{max}$ and $\mu_u^* < \mu_{max}$. Then, there
 exists $k_0 \in \N$ such that, for all $k \geq k_0$, $\mu^{k}_l>0 \Leftrightarrow
 \mu^*_l>0$, $\mu^{k}_u > 0 \Leftrightarrow \mu^*_u>0$,
 $x^{k}_i<l_i+\frac{[\mu^{k}_l]_i}{\rho_{k}}\Leftrightarrow
@@ -555,7 +555,7 @@ We are now ready to prove the finite convergence of the method:
 the sequence $\{x^k\}$ 
 converges to $x^*$, which
 is a regular solution of  problem \eqref{PL}  and satisfies the strict complementarity  with $\mu_l^* <
-\mu_{max}$ and $\mu_u^* < \mu_{max}$. So, there exists $k_1$ such
+\mu_{max}$ and $\mu_u^* < \mu_{max}$. Then, there exists $k_1$ such
 that $x^{k_1}=x^*$.
 \end{theorem}
 
@@ -610,26 +610,26 @@ We will consider, from now on, that $Q$ is positive definite. If $Q$ is only pos
   \caption{ (for solving the subproblems)}
   \label{solvesubp}
   \begin{algorithmic}
-\State \noindent  \textbf{Step 0 (initialization)}: \\ Let $\varepsilon>0$ and set $k\leftarrow0$. Set $(x^0,\lambda^0)\in F\times\R^m$ as the current outer iterate.\\
+\State \noindent  \textbf{Step 0 (initialization)}: \\ Let $\varepsilon\geq0$ and set $k\leftarrow0$. Set $(x^0,\lambda^0)\in F\times\R^m$ as the current outer iterate.\\
 
-\State \noindent \textbf{Step 1 (stopping criterion)}:\\ Set $r=Qx^k+c+A^\T\lambda^k-\rho\max\{l-x,0\}+\rho\max\{x-u,0\}$ and stop if $\|r_k\|_\infty<\varepsilon$.\\
+\State \noindent \textbf{Step 1 (stopping criterion)}:\\ Set $r=Qx^k+c+A^\T\lambda^k-\rho\max\{l-x,0\}+\rho\max\{x-u,0\}$ and stop if $\|r_k\|_\infty\leq\varepsilon$.\\
 
        
     \State  \noindent \textbf{Step 2 (compute Newton direction)}:\\
     Solve the linear system
     \begin{equation}\label{newton}
-    \left(\begin{array}{cc}Q+H&A^\mathtt{T}\\A&0\end{array}\right)\left(\begin{array}{c}x_{trial}\\ \lambda^{k+1}\end{array}\right)=-c+v,
+    \left(\begin{array}{cc}Q+H^k&A^\mathtt{T}\\A&0\end{array}\right)\left(\begin{array}{c}x_{trial}\\ \lambda^{k+1}\end{array}\right)=-c+v^k,
     \end{equation}
-    where $v_i=\rho u_i$ if $x_i\geq u_i$, $v_i=\rho l_i$, if $x_i\leq l_i$, and $v_i=0$ otherwise. Also, $H$ is diagonal with $H_{ii}=0$ if $l_i<x_i<u_i$, and $H_{ii}=\rho$, otherwise.
+    where $v_i^k=\rho u_i$ if $x_i^k\geq u_i$, $v_i^k=\rho l_i$, if $x_i^k\leq l_i$, and $v_i^k=0$ otherwise. Also, $H^k$ is diagonal with $H^k_{ii}=0$ if $l_i<x_i^k<u_i$, and $H_{ii}^k=\rho$, otherwise.
     \State  \noindent \textbf{Step 3 (line search)}:\\
-Set $d_x=\gamma(x_{trial}-x^k)$, where $\gamma=\min\left\{1,\frac{100}{\|x_{trial}-x^k\|}\right\}$. Find $t^*$ as the global minimizer of the one-dimensional piecewise quadratic $t\mapsto L(x^k+td_x)$ and reset $t^*$ as the projection of $t^*$ onto the safeguarded interval $[-\min\{\|d_x\|,10^{-6}\},1+\|d_x\|]$.\\
+Set $d^k=\gamma(x_{trial}-x^k)$, where $\gamma=\min\left\{1,\frac{100}{\|x_{trial}-x^k\|}\right\}$. Find $t^*$ as the global minimizer of the one-dimensional piecewise quadratic $t\mapsto L(x^k+td^k)$ and compute $t_k$ as the projection of $t^*$ onto the safeguarded interval $[-\min\{\|d^k\|,10^{-6}\},1+\|d^k\|]$.\\
 
-    \State  \noindent \textbf{Step 4. (update and repeat)}: Set $x^{k+1}=x^k+t^*d_x$. Update $k \leftarrow k+1$ and go to Step~1.\\
+    \State  \noindent \textbf{Step 4. (update and repeat)}: Set $x^{k+1}=x^k+t_kd^k$. Update $k \leftarrow k+1$ and go to Step~1.\\
 
   \end{algorithmic}
 \end{algorithm}
 
-The linear system \eqref{newton} is the standard Newton direction for the KKT system. The direction is re-scaled to avoid a direction with norm greater than $100$. The minimization of $L(x^k+td_x)$ is done by a sequence of straightforward minimization of (smooth) unidimensional convex quadratics. The safeguarded projection is considered to avoid numerical errors when the Newton direction is not accurately computed.
+The linear system \eqref{newton} gives the standard Newton direction for the KKT system. The direction is re-scaled to avoid a direction with norm greater than $100$. The minimization of $L(x^k+td^k)$ is done by a sequence of straightforward minimization of (smooth) unidimensional convex quadratics. The safeguarded projection is considered to avoid numerical errors when the Newton direction is not accurately computed.
 
 %the (smooth) quadratic $$\tilde L(t)=\frac{1}{2}(x^k+td_x)^TQ(x^k+td_x)+c^T(x^k+td_x)+\frac{\rho}{2}\left[\sum_{x_i^k\leq l_i}(x_i^k+t[d_x]_i-l_i)^2+\sum_{x_i^k\geq u_i}(x_i^k+t[d_x]_i-u_i)^2\right],$$
 
