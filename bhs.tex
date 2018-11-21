@@ -921,7 +921,7 @@ $\mu_u^0=\max\{0,\mu\}$, with $\mu = -(Qx^{0}+c+A^{T}\lambda^{0})$;
 
 \item [\texttt{Mehrotra}:] $x^{0}$, $\lambda^{0}$, $\mu_l^0$ and $\mu_u^0$ are computed by the usual Mehrotra-type heuristic~\cite{Mehrotra:1992wr};
 
-\item [\texttt{OnesM}:] we define $x^{0}$ as the vector of ones, $\mu_l^0 = Qx^{0}+c +\beta I$, where $\beta>0$ is the minimum value such that all components of $\mu_l^0$ are at least $\num{0.1}$,  $\lambda^{0}$ is computed as the least squares solution of $A^{T}\lambda = -(Qx^{0}+c-\mu_l^0)$,  and $\mu_u^0$ is the vector of zeros.
+\item [\texttt{OnesM}:] we define $x^{0}$ as the vector of ones, $\mu_l^0 = Qx^{0}+c +\beta I$, where $\beta\geq0$ is chosen such that all components of $\mu_l^0$ are at least $\num{0.1}$,  $\lambda^{0}$ is computed as the least squares solution of $A^{T}\lambda = -(Qx^{0}+c-\mu_l^0)$,  and $\mu_u^0$ is the vector of zeros.
 
 
 \end{description}
