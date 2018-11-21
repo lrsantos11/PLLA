@@ -2,6 +2,7 @@
 \usepackage{graphicx}
 
 \usepackage{amsmath}
+\usepackage{mathtools}
 \usepackage{showlabels}
 \usepackage{latexsym}
 \usepackage{url}
@@ -12,16 +13,16 @@
 
 \usepackage{color}
 \usepackage[latin1]{inputenc}
-\usepackage{hyperref}
+\usepackage[hypertexnames=false]{hyperref}
+\usepackage{cleveref}
 \usepackage[hyperref=true,
-                       isbn=false,
-                       style=numeric-comp,
-                       giveninits=true,
-                       maxbibnames=99]{biblatex}
+            isbn=false,
+            style=numeric-comp,
+            giveninits=true,
+            maxbibnames=99]{biblatex}
 \addbibresource{biblio.bib}
 \usepackage{subcaption}
-\usepackage{mathtools}
-\usepackage{cleveref}
+
 
 \setlength{\textwidth}     {15.0cm} \setlength{\textheight}
 {21.0cm} \setlength{\evensidemargin}{ 0.5cm}
@@ -247,7 +248,7 @@ $L(x,\rho_k,\mu_l^k,\mu_u^k)$, as a function of $x$, tends to
 infinity when the norm of $x$ goes to infinity.
 \end{lemma}
 
-\noindent {\it Proof} Note that   $L(x,\rho_k,\mu_l^k,\mu_u^k)$ is a composition of a bounded below quadratic term  plus 
+\noindent {\it Proof}. Note that   $L(x,\rho_k,\mu_l^k,\mu_u^k)$ is a composition of a bounded below quadratic term  plus 
 separable terms in relation to each of the variables. That is,
 $$L(x,\rho_k,\mu_l^k,\mu_u^k)= \frac{1}{2}x^TQx+\sum_{i=1}^n L_i^k(x_i),$$
 where
