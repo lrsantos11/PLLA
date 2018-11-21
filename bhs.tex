@@ -928,7 +928,8 @@ $\mu_u^0=\max\{0,\mu\}$, where $\mu = -(Qx^{0}+c+A^{T}\lambda^{0})$;
 
 Independently of the choice above, the second step depends on the method: for \texttt{LAQP}, we perform a full Newton step to recover feasibility regarding $Ax=b$; for  \texttt{IPM}, we use the shifting strategy implemented by Mehrotra~\cite{Mehrotra:1992wr} to assure that the initial point is (sufficiently) in the interior of the box constraints. 
 
-We start by considering first all 62 (out of 98) \textsc{Netlib} problems with less than \num{10000} non-zero entries in the matrix of constraints in order to decide  which of four possible points provide better results in this collection, for each method.
+We start by considering 62 (out of 98) \textsc{Netlib} problems with less than \num{10000} non-zero elements in the matrix of constraints\footnote{There are 65 of such problems in \textsc{Netlib}, however presolved versions of \texttt{forplan, gfrd-pnc} and \texttt{pilot.we} were not available in \cite{HagerCoapSoftware}.} in order to decide  which of those aforementioned four possible initial points provide better numerical results, for each method.
+
 
 Moreover, for \texttt{LAQP}, we use a \texttt{Hybrid} approach, which uses the second-order update only when the solution of the subproblem is within the same region as the current iterate, in the sense that the corresponding Hessians of the augmented Lagrangian function coincide. Otherwise, the first-order update is used. The performance profiles, computed in terms of the number of linear systems solved, are presented below on \Cref{fig:PP-4points}, where for each algorithm all initial points are compared.
 
@@ -978,7 +979,7 @@ With the same two configurations, we perform a more thorough test on all 98 \tex
 We emphasize that our goal is to compare a pure interior point method versus the pure augmented Lagrangian method proposed, without sophisticated accelerations and safeguards. This explains the overall poor behavior of both methods. As pointed out by~\textcite{Haeser:2017wl}, IPOPT~\cite{Wachter:2005hk}, a well tuned interior point method, solves 56 of the 68 smallest problems of  \textsc{Netlib} collection when limited to 300 iterations. They also show that no strict interior point exists on circa 65\% of \textsc{Netlib} problems, which indicates that those  are rather difficult ones.
 
 
-To  to better analyze the behavior of both methods more carefully, \Cref{fig:Bar_LAQPNew-IPMMehrotra_All_2} below represents a ratio calculated for each of the 95 available problems on the horizontal axis, ordered in increasing size of non-zero entries in the constraint matrix. A bar with a positive vertical coordinate indicates that \texttt{LAQPHybrid-New} is the best solver in terms of the number of linear systems solved, while a negative coordinate indicates that \texttt{IPM-Mehrotra} is better. The size of the bar indicates the ratio $r_i$, for each problem $i$, computed as 
+To better analyze the behavior of both methods more carefully, \Cref{fig:Bar_LAQPNew-IPMMehrotra_All_2} below represents a ratio calculated for each of the 95 available problems on the horizontal axis, ordered in increasing size of non-zero entries in the constraint matrix. A bar with a positive vertical coordinate indicates that \texttt{LAQPHybrid-New} is the best solver in terms of the number of linear systems solved, while a negative coordinate indicates that \texttt{IPM-Mehrotra} is better. The size of the bar indicates the ratio $r_i$, for each problem $i$, computed as 
 \[
 r_i = \frac{\#S_{\mathtt{IPM-Mehrotra}}^{i} - \#S_{\mathtt{LAQPHybrid-New}}^{i} }
 {\max\{ \#S_{\mathtt{IPM-Mehrotra}}^{i} , \#S_{\mathtt{LAQPHybrid-New}}^{i} \}},
