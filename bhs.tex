@@ -905,10 +905,10 @@ So, by Corollary \ref{convfinitasolunica}, we have that the Algorithm finds $x^*
 \section{Numerical experiments}
 \graphicspath{ {./figures/} }
 
-The goal of our numerical experiments is to show that this method is compatible with a simple implementation of a pure interior point method. We implemented the LAQP algorithm (called \texttt{LAPQ}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}) in Julia~\cite{Bezanson:2017g}. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arises in both methods. 
+The goal of our numerical experiments is to show that the Augmented Lagrangian method proposed is compatible with a simple implementation of a pure interior point method. We implemented Algorithm \ref{ALalg} (called \texttt{LAQP}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}), both in Julia~\cite{Bezanson:2017g}. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arise in both methods. 
  
 
-Our tests are run on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
+Our tests are based on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
 
 We set the starting point using two steps. In the first step, we choose one of the four possible starting points candidates:
 
