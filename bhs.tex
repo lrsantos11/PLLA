@@ -1010,8 +1010,7 @@ Based on these results, we conclude that the augmented Lagrangian method with th
 % \includegraphics[scale=0.3]{PP_LAQP-4points}
 
 
-We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test of \texttt{LAQPHybrid-New} and \texttt{IPM-Mehrotra} on the whole (modified) \textsc{Netlib} test set and we select only the $29$ problems where both solvers were successful. We then take a perturbation of the solution $(x^*,\lambda^*,\mu_l^*,\mu_u^*)$ found by each solver and we run each solver again with this point as the initial point. The perturbation for the augmented Lagrangian is given by $[x^0]_i=(1+10^{-3}n_i)[x^*]_i+u_i$, where $n_i$ is sampled from the standard normal distribution and $u_i$ is a random value between $-10^{-5}$ and $10^{-5}$, for each coordinate $i$. A similar perturbation is performed for $\lambda^0, \mu_l^0$ and $\mu_u^0$. For the interior point method, after the perturbation of $(x^*,\lambda^*,\mu_l^*,\mu_u^*)$ as described above, we perform a Mehrotra type update to obtain an interior initial point and its corresponding multipliers.  The results are on \Cref{tab:LAQP_IPM_Perturbed_x} below.
-
+We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test of \texttt{LAQPHybrid-New} and \texttt{IPM-Mehrotra} on the whole (modified) \textsc{Netlib} test set and we select only the $29$ problems where both solvers were successful. We then take a perturbation of the solution $(x^*,\lambda^*,\mu_l^*,\mu_u^*)$ found by each solver and we run each solver again with this point as the initial point. The perturbation for the augmented Lagrangian is given by $[x^0]_i=(1+10^{-3}n_i)[x^*]_i+u_i$, where $n_i$ is sampled from the standard normal distribution and $u_i$ is a random value between $-10^{-5}$ and $10^{-5}$, for each coordinate $i$. A similar perturbation is performed for $\lambda^0, \mu_l^0$ and $\mu_u^0$. For the interior point method, after the perturbation of $(x^*,\lambda^*,\mu_l^*,\mu_u^*)$ as described above, we perform a Mehrotra type shift to obtain an interior initial point and its corresponding multipliers.  The results are on \Cref{tab:LAQP_IPM_Perturbed_x}.
 
 \begin{table}[!hbt]\centering
 \caption{Number of systems solved after perturbation on $x^{0}$ for \texttt{LAQP} and \texttt{IPM}.}
@@ -1053,11 +1052,9 @@ stocfor1 & 474  &  46   &   4 \\
 \end{tabular}
 \end{table}
 
-
-
 The \texttt{LAQPHybrid} variant of \texttt{LAQP} always performs the first Lagrange multiplier update as the first-order one, which we have observed that it is not efficient for solving the problem from a perturbed solution. Hence, in this test, we always perform the second-order update, that is, \texttt{LAQPDual} is run. We note that the method was not able to solve problem \texttt{qap8} from the perturbed solution.
 
-
+In $17$ problems ($59$\%), \texttt{LAQP} found the solution faster than \texttt{IPM}. In this cases, \texttt{LAQP} took in average $2$ additional iterations, while \texttt{IPM} took, in average, $4.8$ excluding three cases where more than $40$ additional iterations were necessary. In $1$ problem both methods took $5$ additional iterations and in the remaining $11$ problems ($38$\%) where \texttt{IPM} found the solution faster than \texttt{LAQP}, we can see that, in general, these were cases where in the original run \texttt{LAQP} was already inferior to \texttt{IPM}.
 
 
 \section{Conclusions}
