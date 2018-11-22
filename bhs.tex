@@ -1016,39 +1016,39 @@ We envision that the main quality of our method, in comparison with interior poi
 \begin{table}[!hbt]\centering
 \caption{Number of systems solved after perturbation on $x^{0}$ for \texttt{LAQP} and \texttt{IPM}.}
 \label{tab:LAQP_IPM_Perturbed_x}
-\begin{tabular}{>{\ttfamily}lS[table-format=5,group-minimum-digits=3]cc}
+\begin{tabular}{>{\ttfamily}lS[table-format=5,group-minimum-digits=3]cccc}
 \toprule
-{\normalfont \textbf{Problem}}  & {\textbf{Nonzeros}} &\texttt{LAQP} & \texttt{IPM} \\ 
+{\normalfont \textbf{Problem}}  & {\textbf{Nonzeros}} &\texttt{LAQP} &   \texttt{IPM} & \texttt{LAQP-Perturbed}  & \texttt{IPM-Perturbed} \\ 
 \midrule  
-afiro    & 88   &   2   &   3 \\
-adlittle & 465  &   2   &   5 \\
-agg2     & 4515 &   2   &   7 \\
-agg3     & 4531 &   2   &   9 \\
-beaconfd & 3476 &   2   &   5 \\
-blend    & 521  &   2   &   4 \\
-bore3d   & 1525 &  19   &   7 \\
-e226     & 2767 &  61   &   7 \\
-ganges   & 7021 &  44   &   8 \\
-grow15   & 5665 &   2   &  43 \\
-grow22   & 8318 &   2   &  48 \\
-grow7    & 2633 &   2   &  44 \\
-israel   & 2358 &  77   &   8 \\
-kb2      & 291  &  89   &   6 \\
-lotfi    & 1086 &   2   &   5 \\
-modszk1  & 4158 &  24   &   6 \\
-qap8     & 8304 & --    &   4 \\
-sc105    & 281  &   2   &   3 \\
-sc205    & 552  &   2   &   4 \\
-sc50a    & 131  &   2   &   3 \\
-sc50b    & 119  &   2   &   3 \\
-scrs8    & 4029 &  10   &   6 \\
-scsd6    & 5666 &  62   &  46 \\
-sctap1   & 2052 &   3   &   7 \\
-sctap2   & 8124 &  38   &   7 \\
-seba     & 4874 &   2   &   3 \\
-share2b  & 730  &   5   &   5 \\
-stair    & 3857 &   2   &   6 \\
-stocfor1 & 474  &  46   &   4 \\
+afiro    & 88   &   16          &   \textbf{14}   &   \textbf{2}      &   3 \\
+adlittle & 465  &   61          &   \textbf{16}   &   \textbf{2}      &   5 \\
+agg2     & 4515 &   64          &   \textbf{34}   &   \textbf{2}      &   7 \\
+agg3     & 4531 &   61          &   \textbf{38}   &   \textbf{2}      &   9 \\
+beaconfd & 3476 &    \textbf{2} &   15            &   \textbf{2}      &   5 \\
+blend    & 521  &   22          &   \textbf{16}   &   \textbf{2}      &   4 \\
+bore3d   & 1525 &   36          &   36            &  19               &   \textbf{7} \\
+e226     & 2767 &   73          &   \textbf{29}   &  61               &   \textbf{7} \\
+ganges   & 7021 &  152          &   \textbf{30}   &  44               &   \textbf{8} \\
+grow15   & 5665 &   \textbf{76} &   79            &   \textbf{2}      &  43 \\
+grow22   & 8318 &   \textbf{40} &   84            &   \textbf{2}      &  48 \\
+grow7    & 2633 &   \textbf{71} &   80            &   \textbf{2}      &  44 \\
+israel   & 2358 &  \textbf{179} &  193            &  77               &   \textbf{8} \\
+kb2      & 291  &  108          &   \textbf{21}   &  89               &   \textbf{6} \\
+lotfi    & 1086 &   \textbf{14} &   18            &   \textbf{2}      &   5 \\
+modszk1  & 4158 &  294          &   \textbf{50}   &  24               &   \textbf{6} \\
+qap8     & 8304 &  131          &   \textbf{16}   & --                &   \textbf{4} \\
+sc105    & 281  &    \textbf{8} &   21            &   \textbf{2}      &   3 \\
+sc205    & 552  &   \textbf{16} &   62            &   \textbf{2}      &   4 \\
+sc50a    & 131  &    \textbf{2} &    7            &   \textbf{2}      &   3 \\
+sc50b    & 119  &    \textbf{4} &   10            &   \textbf{2}      &   3 \\
+scrs8    & 4029 &  195          &   \textbf{31}   &  10               &  \textbf{ 6} \\
+scsd6    & 5666 &   \textbf{58} &   92            &  62               &  \textbf{46} \\
+sctap1   & 2052 &   69          &   \textbf{45}   &   \textbf{3}         &   7 \\
+sctap2   & 8124 &  126          &   \textbf{38}   &  38               &   \textbf{7} \\
+seba     & 4874 &    \textbf{9} &   12            &   \textbf{2}      &   3 \\
+share2b  & 730  &   43          &   \textbf{31}   &   5               &   5 \\
+stair    & 3857 &   81          &   \textbf{43}   &   \textbf{2}      &   6 \\
+stocfor1 & 474  &   15          &   \textbf{13}   &  46               &   \textbf{4} \\
 \bottomrule
 \end{tabular}
 \end{table}
