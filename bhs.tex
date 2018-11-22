@@ -905,7 +905,7 @@ So, by Corollary \ref{convfinitasolunica}, we have that the Algorithm finds $x^*
 \section{Numerical experiments}
 \graphicspath{ {./figures/} }
 
-The goal of our numerical experiments is to show that the Augmented Lagrangian method proposed is compatible with a simple implementation of a pure interior point method. We implemented Algorithm \ref{ALalg} (called \texttt{LAQP}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}), both in Julia~\cite{Bezanson:2017g}. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arise in both methods. 
+The goal of our numerical experiments is to show that the Augmented Lagrangian method proposed is compatible with a simple implementation of a pure interior point method. We implemented Algorithm \ref{ALalg} (called \texttt{LAQP}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}), both in Julia~\cite{Bezanson:2017g}. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arise in both methods. We run the tests on an iMac Pro with Intel Xeon W 3.2 GHz Processor and 32 GB RAM.
  
 
 Our tests are based on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
@@ -1009,16 +1009,11 @@ Based on these results, we conclude that the augmented Lagrangian method with th
 
 % \includegraphics[scale=0.3]{PP_LAQP-4points}
 
-We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test on the whole (modified) \textsc{Netlib} test set and we select only the ***** problems where both solvers were successful. Then, for each solver, we consider a new run of these problems by taking as the initial point a perturbation of the solution found by the respective solver. That is, the initial point $x^0$ is given by *****. In the case of the interior point method we additionally project it onto a strict interior. The corresponding performance profile is presented below.
+We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test of \texttt{LAQPHybrid-New} and \texttt{IPM-Mehrotra} on the whole (modified) \textsc{Netlib} test set and we select only the $29$ problems where both solvers were successful. We then take a perturbation of the solution $(x^*,\lambda^*,\mu_l^*,\mu_u^*)$ found by each solver and we run each solver again with this point as the initial point. The perturbation for the augmented Lagrangian is given by $[x^0]_i=(1+10^{-3}n_i)[x^*]_i+u_i$, where $n_i$ is sampled from the standard normal distribution and $u_i$ is a random value between $-10^{-5}$ and $10^{-5}$, for each coordinate $i$. A similar perturbation is performed for $\lambda^0, \mu_l^0$ and $\mu_u^0$. For the interior point method, after the perturbation of $(x^*,\lambda^*,\mu_l^*,\mu_u^*)$ as described above, we perform a Mehrotra type update to obtain an interior initial point and its corresponding multipliers. The table with the results is presented below.
 
-\begin{color}{red}Tests we have not run yet:
+The \texttt{LAQPHybrid} variant of \texttt{LAQP} always performs the first Lagrange multiplier update as the first-order one, which we have observed that it is not efficient for solving the problem from a perturbed solution. Hence, in this test, we always perform the second-order update, that is \texttt{LAQPDual} is run. We note that the method was not able to solve problem \texttt{qap8} from the perturbed solution.
 
-$\bullet$ Fix the collection of problems which were solved by both methods. Take as initial point a perturbation of a solution, and also Mehrotra initial point for IPM. Compare the three.
 
-$\bullet$ adicionar uma restrição de modo a deixar a solucao inviavel.
-
-$\bullet$ Tests for linear programming. (eu acho que nao devemos fazer --- nao acrescenta muito e vai dar trabalho)
-\end{color}
 
 \section{Conclusions}
 
