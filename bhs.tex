@@ -46,7 +46,7 @@
 
 \begin{document}
 
-\title{Towards an efficient penalty method for convex quadratic programming \footnote{This work was supported by FAPESP 2013/05475-7, 2017/18308-2 and CNPq.}}
+\title{Towards an efficient penalty method for linear and convex quadratic programming \footnote{This work was supported by FAPESP 2013/05475-7, 2017/18308-2 and CNPq.}}
 \author{
   L. F. Bueno \thanks{Institute of Science and Technology, Federal
     University of S\~ao Paulo, S\~ao Jos\'e dos Campos-SP,
@@ -142,7 +142,7 @@ $$F=\{x\in\R^n\mid Ax=b\}.$$
  
 
 The algorithm presented in this section is a particular
-case of the Augmented Lagrangian method described previously, when applied to the convex quadratic programming problem \eqref{PL}, penalizing the box constraints and considering the equality constraints as the lower level constraints. An approximate solution for the subproblem will be one that satisfies the first-order stationary condition up to a given tolerance. Due to the convexity of the problem, this will be enough to obtain convergence to a global minimizer.
+case of the augmented Lagrangian method described previously, when applied to the convex quadratic programming problem \eqref{PL}, penalizing the box constraints and considering the equality constraints as the lower level constraints. An approximate solution for the subproblem will be one that satisfies the first-order stationarity conditions up to a given tolerance, that is, the norm of the residual of the corresponding nonlinear system of equations is at most the given tolerance. Due to the convexity of the problem, this will be enough to obtain convergence to a global minimizer.
 
 % Inspired by the interior point approach, where only one newtonian iteration is employed at each subproblem, we include a possibility of aborting the solution of the subproblem and correcting the Lagrange multipliers approximations in order to avoid oversolving the subproblems.
 
@@ -219,7 +219,7 @@ M\left(\begin{array}{c}d^1\\d^2\\d^3\end{array}\right)=\left(\begin{array}{c}l_{
 \end{equation}
 where $d^1\in\R^{|I_l|}, d^2\in\R^{|I_u|}$, and $d^3\in\R^m$. The notation $v_{I_l}\in\R^{|I_l|}$ corresponds to the vector with components $v_i, i\in I_l$ of the vector $v\in\R^n$. Similarly for $I_u$. We then define $[\mu_l^{k+1}]_{I_l}=\max\{0,[\mu_l^{k}]_{I_l}+d^1\}$ and $[\mu_u^{k+1}]_{I_u}=\max\{0,[\mu_u^{k}]_{I_u}+d^2\}$, keeping $[\mu_l^{k+1}]_i=[\mu_l^k]_i$ and $[\mu_u^{k+1}]_i=[\mu_u^k]_i$ for the remaining indexes. This is the standard second-order Lagrange multiplier update when considering that all constraints are penalized. However, by following the approach of \cite{yaxyuan} but considering constrained subproblems, we arrived at the same formula.
 
-If $Q$ is not positive definite or the inverse of $Q+H$ is not easily computable, we use only the first-order update. This is the case, for example, in our linear programming tests. In our implementation we also used the first-order update if the solution of \eqref{sist2orderupdate} is not accurate.
+If $Q$ is not positive definite or the inverse of $Q+H$ is not easily computable, we advocate the use of the first-order update only. In our implementation we used the first-order update if the solution of \eqref{sist2orderupdate} is not accurate.
 
 
 %\begin{color}{red}We say that a point is an approximated solution of an optimization problem if we can ensure that the 
@@ -230,7 +230,7 @@ If $Q$ is not positive definite or the inverse of $Q+H$ is not easily computable
 In order to analyze the asymptotic behavior of the algorithm, 
 we consider that it only stops at an iteration $k_0$ when an exact solution is found, that is, we consider $\varepsilon=0$ in the stopping criterion. Even in this case, we consider that an infinite sequence is generated with $x^{k}=x^{k_0}$ for all $k > k_0$.
 
-In Augmented Lagrangian approaches where the box constraints $ l \leq x \leq
+In augmented Lagrangian approaches where the box constraints $ l \leq x \leq
 u$ are not penalized, it is straightforward that the subproblems are well defined and
 that the generated sequence remains in a compact set. The following
 lemmas ensure that these properties hold for Algorithm \ref{ALalg}, even though box constraints are not necessarily preserved. This is a consequence of dealing with quadratic convex problems. We start by showing well-definiteness:
@@ -905,12 +905,12 @@ So, by Corollary \ref{convfinitasolunica}, we have that the Algorithm finds $x^*
 \section{Numerical experiments}
 \graphicspath{ {./figures/} }
 
-The goal of our numerical experiments is to show that the Augmented Lagrangian method proposed is compatible with a simple implementation of a pure interior point method. We implemented Algorithm \ref{ALalg} (called \texttt{LAQP}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}), both in Julia~\cite{Bezanson:2017g}. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arise in both methods. We run the tests on an iMac Pro with Intel Xeon W 3.2 GHz Processor and 32 GB RAM.
+The goal of our numerical experiments is to show that the augmented Lagrangian method proposed is compatible with a simple implementation of a pure interior point method. This is done in order to motivate further studies on augmented Lagrangian methods applied to linear and convex problems. We implemented Algorithm \ref{ALalg} (called \texttt{LAQP}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}), both in Julia~\cite{Bezanson:2017g}. In \texttt{IPM}, finite upper bounds were included as new constraints by adding slack variables. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arise in both methods. We run the tests on an iMac Pro with Intel Xeon W 3.2 GHz Processor and 32 GB RAM.
  
 
-Our tests are based on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
+Our tests are based on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a homogeneous quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
 
-We set the starting point using two steps. In the first step, we choose one of the four possible starting points candidates:
+We set the initial point using two steps. In the first step, we choose one of the four possible initial point candidates:
 
 \begin{description}
   \item[\texttt{New}:] in this approach, $x^0$ is computed as the projection of the solution of  $\min \frac{1}{2}x^{T}Qx + c^Tx $, subject to $Ax=b$, onto the box constraints. That is, a solution of \eqref{PL} ignoring the box constraints is computed and then projected onto the box constraints. Next, $\lambda^{0}$ is computed as the least squares solution of $A^{T}\lambda = -(Qx^{0}+c)$, while  $\mu_l^0=-\min\{0, \mu\}$  and
@@ -1015,9 +1015,10 @@ We envision that the main quality of our method, in comparison with interior poi
 \begin{table}[!hbt]\centering
 \caption{Number of linear systems solved before and after starting from a perturbed solution for \texttt{LAQP} and \texttt{IPM}.}
 \label{tab:LAQP_IPM_Perturbed_x}
-\begin{tabular}{>{\ttfamily}lS[table-format=5,group-minimum-digits=3]cccc}
+\begin{tabular}{>{\ttfamily}lS[table-format=5,group-minimum-digits=3]cc|cc}
 \toprule
-{\normalfont \textbf{Problem}}  & {\textbf{Nonzeros}} &\texttt{LAQP} &   \texttt{IPM} & \texttt{LAQP-Perturbed}  & \texttt{IPM-Perturbed} \\ 
+    & &  \multicolumn{2}{c}{First run} &   \multicolumn{2}{c}{Second run}  \\
+{\normalfont \textbf{Problem}}  & {\textbf{Nonzeros}} &\texttt{LAQP} &   \texttt{IPM} & \texttt{LAQP}  & \texttt{IPM} \\ 
 \midrule  
 afiro    & 88   &   16          &   \textbf{13}   &   \textbf{2}      &   3  \\
 adlittle & 465  &   61          &   \textbf{17}   &   \textbf{2}      &   5  \\
@@ -1025,41 +1026,38 @@ agg2     & 4515 &   64          &   \textbf{34}   &   \textbf{2}      &   7  \\
 agg3     & 4531 &   61          &   \textbf{33}   &   \textbf{2}      &   6  \\
 beaconfd & 3476 &    \textbf{2} &   15   &   \textbf{2}               &   5  \\
 blend    & 521  &   22          &   \textbf{16}   &   \textbf{2}      &   4  \\
-bore3d   & 1525 &   \textbf{36}          &   38   &  19               &   7  \\
-e226     & 2767 &   73          &   \textbf{28}   &  61               &   6  \\
-ganges   & 7021 &  152          &   \textbf{28}   &  44               &   8  \\
+bore3d   & 1525 &   \textbf{36}          &   38   &  19               &   \textbf{7}  \\
+e226     & 2767 &   73          &   \textbf{28}   &  61               &   \textbf{6}  \\
+ganges   & 7021 &  152          &   \textbf{28}   &  44               &   \textbf{8}  \\
 grow15   & 5665 &   \textbf{76} &   79   &   \textbf{2}               &  43  \\
 grow22   & 8318 &   \textbf{40} &   84   &   \textbf{2}               &  48  \\
 grow7    & 2633 &   \textbf{71} &   80   &   \textbf{2}               &  44  \\
-israel   & 2358 &  179 &  \textbf{132}   &  77                        &   9  \\
-kb2      & 291  &  108          &   \textbf{20}   &  89               &   6  \\
+israel   & 2358 &  179 &  \textbf{132}   &  77                        &   \textbf{9}  \\
+kb2      & 291  &  108          &   \textbf{20}   &  89               &   \textbf{6}  \\
 lotfi    & 1086 &   \textbf{14} &   17   &   \textbf{2}               &   5  \\
-modszk1  & 4158 &  294          &   \textbf{50}   &  24               &   6  \\
-qap8     & 8304 &  131          &   \textbf{16}   & --                &   4  \\
+modszk1  & 4158 &  294          &   \textbf{50}   &  24               &   \textbf{6}  \\
+qap8     & 8304 &  131          &   \textbf{16}   & --                &   \textbf{4}  \\
 sc105    & 281  &    \textbf{8} &   21   &   \textbf{2}               &   3  \\
 sc205    & 552  &   \textbf{16} &   62   &   \textbf{2}               &   4  \\
 sc50a    & 131  &    \textbf{2} &    7   &   \textbf{2}               &   3  \\
 sc50b    & 119  &    \textbf{4} &   10   &   \textbf{2}               &   3  \\
-scrs8    & 4029 &  195          &   \textbf{31}   &  10               &   6  \\
-scsd6    & 5666 &   \textbf{58} &   92   &  62                        &  46  \\
+scrs8    & 4029 &  195          &   \textbf{31}   &  10               &   \textbf{6}  \\
+scsd6    & 5666 &   \textbf{58} &   92   &  62                        &  \textbf{46}  \\
 sctap1   & 2052 &   69          &   \textbf{45}   &   \textbf{3}      &   7  \\
-sctap2   & 8124 &  126          &   \textbf{38}   &  38               &   7  \\
+sctap2   & 8124 &  126          &   \textbf{38}   &  38               &   \textbf{7}  \\
 seba     & 4874 &    \textbf{9} &   12   &   \textbf{2}               &   3  \\
-share2b  & 730  &   43          &   \textbf{37}   &   5               &  10  \\
+share2b  & 730  &   43          &   \textbf{37}   &   \textbf{5}      &  10  \\
 stair    & 3857 &   81          &   \textbf{59}   &   \textbf{2}      &   8  \\
-stocfor1 & 474  &   15          &   \textbf{13}   &  46               &   4  \\
+stocfor1 & 474  &   15          &   \textbf{13}   &  46               &   \textbf{4}  \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 The \texttt{LAQPHybrid} variant of \texttt{LAQP} always performs the first Lagrange multiplier update as the first-order one, which we have observed that it is not efficient for solving the problem from a perturbed solution. Hence, in this test, we always perform the second-order update, that is, \texttt{LAQPDual} is run. We note that \texttt{LAQP} was not able to solve problem \texttt{qap8} from the perturbed solution.
 
-In \Cref{tab:LAQP_IPM_Perturbed_x} we can see that in $17$ problems ($59$\%), \texttt{LAQP} found the solution faster than \texttt{IPM}. In this cases, \texttt{LAQP} took in average $2$ additional iterations, while \texttt{IPM} took, in average, $4.8$ iterations, excluding three cases where more than $40$ additional iterations were necessary. In $1$ problem both methods took $5$ additional iterations and in the remaining $11$ problems ($38$\%) where \texttt{IPM} found the solution faster than \texttt{LAQP}, we can see that, in general, these were cases where in the original run \texttt{LAQP} was already inferior to \texttt{IPM}. More specifically, in $12$ problems where \texttt{LAQP} was originally faster than \texttt{IPM}, \texttt{LAQP} was still faster to recover the solution on the second run on $10$ problems ($83$\%), while on $17$ problems where \texttt{IPM} was faster on the first run, \texttt{IPM} was able to be faster to recover the solution on the second run on $9$ problems ($53$\%).
+In \Cref{tab:LAQP_IPM_Perturbed_x} we can see that in $18$ problems ($62$\%), \texttt{LAQP} found the solution faster than \texttt{IPM}. In this cases, \texttt{LAQP} took in average $2.2$ additional iterations, while \texttt{IPM} took, in average, $5.1$ iterations, excluding three cases where more than $40$ additional iterations were necessary. In the remaining $11$ problems ($38$\%), where \texttt{IPM} found the solution faster than \texttt{LAQP}, we can see that, in general, these were cases where in the original run \texttt{LAQP} was already inferior to \texttt{IPM}. More specifically, in $12$ problems where \texttt{LAQP} was originally faster than \texttt{IPM}, \texttt{LAQP} was still faster to recover the solution on the second run on $10$ problems ($83$\%), while on $17$ problems where \texttt{IPM} was faster on the first run, \texttt{IPM} was able to recover the solution on the second run faster on $9$ problems ($53$\%).
 
-We consider again this collection of $29$ problems where both methods found a solution and their corresponding solutions found, say, $x^*$. We now perform two tests by using the solutions found as initial points to a perturbed problem. The first test consists of perturbing the problem in the following way: We find the first index $i$ of $x^*$ such that $l_i=[x^*]_i$ and we then redefine $l_i\leftarrow l_i+1$. This corresponds to a sensibility analysis perturbation. Now $x^*$ is infeasible but it can be used as the initial point for \texttt{LAQP}. For \texttt{IPM} we use $x^*$ and the corresponding Lagrange multipliers followed by a Mehrotra shift as the initial point, to recover interiority. The second test consists of finding the index of the largest interior component of $x^*$, that is, $l_i<[x^*]_i<u_i$. For this index we re-define $u_i\leftarrow [x^*]_i$ as the largest integer smaller than $[x^*]_i$. Since in our implementation of \texttt{IPM} upper bounds are treated explicitly by adding slack variables, there is no need to recover interiority and we may use $x^*$ and the corresponding Lagrange multiplier as the initial point. In both tests we consider appropriate safeguards to ensure $l\leq u$. The results are reported on \Cref{tab:LAQP_IPM_Perturbed_l}.
-
-
-
+We consider again this collection of $29$ problems where both methods found a solution and their corresponding solutions found, say, $x^*$. We now perform two tests by using the solutions found as initial points to a perturbed problem. The first test consists of perturbing the problem in the following way: We find the first index $i$ of $x^*$ such that $l_i=[x^*]_i$ and we then redefine $l_i\leftarrow l_i+1$. This corresponds to a sensibility analysis perturbation. Now $x^*$ is infeasible but it can be used as the initial point for \texttt{LAQP}. For \texttt{IPM} we use $x^*$ and the corresponding Lagrange multipliers followed by a Mehrotra shift as the initial point, to recover interiority. The second test consists of finding the index of the largest interior component of $x^*$, that is, $l_i<[x^*]_i<u_i$. For this index we re-define $u_i\leftarrow [x^*]_i-1$. Since in our implementation of \texttt{IPM} upper bounds are treated explicitly by adding slack variables, there is no need to recover interiority and we may use $x^*$ and the corresponding Lagrange multipliers as the initial point. In both tests we consider appropriate safeguards to ensure $l\leq u$. The results are reported on \Cref{tab:LAQP_IPM_Perturbed_l}, where a dash corresponds to a solver not being able to solve the problem.
 
 \begin{table}[!hbt]\centering
 \caption{Number of systems solved after perturbing the problem with respect to an active bound (Test 1) and an inactive bound (Test 2).}
@@ -1070,59 +1068,63 @@ We consider again this collection of $29$ problems where both methods found a so
     \midrule  
 {\normalfont \textbf{Problem}} & \texttt{LAQP}   & \texttt{IPM} & \texttt{LAQP}   & \texttt{IPM} \\ 
 \midrule  
-afiro    &   7 &    8 &    2 &    6   \\
-adlittle &   2 &    5 &    2 &    6   \\
-agg2     &   2 &    4 &    2 &    8   \\
-agg3     &   2 &    4 &    2 &    6   \\
-beaconfd &   2 &    3 &    2 &    5   \\
-blend    & 137 &  233 &    7 &   10   \\
-bore3d   &  10 &    9 &    2 &    8   \\
-e226     & --  &  --  &    2 &    6   \\
-ganges   &  75 &    4 &   35 &    6   \\
-grow15   &   5 &   16 &    6 &   39   \\
-grow22   &   5 &   24 &    9 &  154   \\
-grow7    &  51 &   35 &    4 &   24   \\
-israel   &  67 &   10 &    6 &   13   \\
-kb2      &  42 &  114 &   48 &   15   \\
-lotfi    &   2 &    3 &    2 &    5   \\
-modszk1  & 417 &    5 &   -- &    6   \\
-qap8     & --  &  --  &   -- &  138   \\
-sc105    &   2 &    4 &    2 &    7   \\
-sc205    &   2 &    4 &    2 &    5   \\
-sc50a    &   2 &  --  &    2 &    6   \\
-sc50b    &   2 &    4 &    3 &    9   \\
-scrs8    &   2 &  --  &    2 &    6   \\
-scsd6    & 106 &   42 &  135 &   99   \\
-sctap1   &  25 &   59 &    3 &    9   \\
-sctap2   &  36 &  206 &    6 &   13   \\
-seba     &   2 &    4 &    2 &    8   \\
-share2b  &  24 &   80 &   24 &   15   \\
-stair    &  11 &   45 &   16 &    7   \\
-stocfor1 &  61 &   12 &   24 &   20   \\
+afiro    &   \textbf{7} &    8 &    \textbf{2} &    6   \\
+adlittle &   \textbf{2} &    5 &    \textbf{2} &    6   \\
+agg2     &   \textbf{2} &    4 &    \textbf{2} &    8   \\
+agg3     &   \textbf{2} &    4 &    \textbf{2} &    6   \\
+beaconfd &   \textbf{2} &    3 &    \textbf{2} &    5   \\
+blend    & \textbf{137} &  233 &    \textbf{7} &   10   \\
+bore3d   &  10 &    \textbf{9} &    \textbf{2} &    8   \\
+e226     & --  &  --  &    \textbf{2} &    6   \\
+ganges   &  75 &    \textbf{4} &   35 &    \textbf{6}   \\
+grow15   &   \textbf{5} &   16 &    \textbf{6} &   39   \\
+grow22   &   \textbf{5} &   24 &    \textbf{9} &  154   \\
+grow7    &  51 &   \textbf{35} &    \textbf{4} &   24   \\
+israel   &  67 &   \textbf{10} &    \textbf{6} &   13   \\
+kb2      &  \textbf{42} &  114 &   48 &   \textbf{15}   \\
+lotfi    &   \textbf{2} &    3 &    \textbf{2} &    5   \\
+modszk1  & 417 &    \textbf{5} &   -- &    \textbf{6}   \\
+qap8     & --  &  --  &   -- &  \textbf{138}   \\
+sc105    &   \textbf{2} &    4 &    \textbf{2} &    7   \\
+sc205    &   \textbf{2} &    4 &    \textbf{2} &    5   \\
+sc50a    &   \textbf{2} &  --  &    \textbf{2} &    6   \\
+sc50b    &   \textbf{2} &    4 &    \textbf{3} &    9   \\
+scrs8    &   \textbf{2} &  --  &    \textbf{2} &    6   \\
+scsd6    & 106 &   \textbf{42} &  135 &   \textbf{99}   \\
+sctap1   &  \textbf{25} &   59 &    \textbf{3} &    9   \\
+sctap2   &  \textbf{36} &  206 &    \textbf{6} &   13   \\
+seba     &   \textbf{2} &    4 &    \textbf{2} &    8   \\
+share2b  &  \textbf{24} &   80 &   24 &   \textbf{15}   \\
+stair    &  \textbf{11} &   45 &   16 &    \textbf{7}   \\
+stocfor1 &  61 &   \textbf{12} &   24 &   \textbf{20}   \\
 \bottomrule
 \end{tabular}
 \end{table}
 
+In the first test, excluding two problems where no method found a solution (possibly due to it having become infeasible), \texttt{LAQP} was faster in $20$ problems ($74$\%) while \texttt{IPM} was faster in $7$ problems ($26$\%). On the second test, \texttt{LAQP} was faster in $21$ problems ($72$\%) while \texttt{IPM} was faster in $8$ problems ($28$\%).
+
 \section{Conclusions}
 
 
-Neste artigo quebramos o paradigma de resolver problemas de
-Programação Linear usando métodos de restrições ativas do tipo
-Simplex ou métodos do tipo Pontos interiores. Propusemos a ideia de
-usar uma abordagem do tipo Lagrangiano Aumentado para resolver este
-problema e discutimos diversas vantagens desta alternativa em
-relação a métodos do tipo Pontos Interiores.
+%Neste artigo quebramos o paradigma de resolver problemas de
+%Programação Linear usando métodos de restrições ativas do tipo
+%Simplex ou métodos do tipo Pontos interiores. Propusemos a ideia de
+%usar uma abordagem do tipo Lagrangiano Aumentado para resolver este
+%problema e discutimos diversas vantagens desta alternativa em
+%relação a métodos do tipo Pontos Interiores.
+%
+%Com nossa proposta abrimos um leque de possibilidades de
+%investigação sobre o tema. O estudo da convergência finita do
+%algoritmo exterior, e a convergência finita sem busca linear no
+%algoritmo interno são questões importantes que devem ser estudadas
+%em pesquisas futuras.
+%
+%Boas estimativas do ponto inicial e dos multiplicadores de Lagrange podem fazer o método muito eficiente. 
+%Acreditamos que isso possa ser usado em métodos de programação linear ou quadrática sequencial
+%para programação não linear. O ponto inicial pooderia ser muito melhor aproveitado do que em métodos
+%de pontos interiores ou no método simplex.
 
-Com nossa proposta abrimos um leque de possibilidades de
-investigação sobre o tema. O estudo da convergência finita do
-algoritmo exterior, e a convergência finita sem busca linear no
-algoritmo interno são questões importantes que devem ser estudadas
-em pesquisas futuras.
-
-Boas estimativas do ponto inicial e dos multiplicadores de Lagrange podem fazer o método muito eficiente. 
-Acreditamos que isso possa ser usado em métodos de programação linear ou quadrática sequencial
-para programação não linear. O ponto inicial pooderia ser muito melhor aproveitado do que em métodos
-de pontos interiores ou no método simplex.
+-- usar IPM melhor
 
 \printbibliography
 % \bibliographystyle{plain}
