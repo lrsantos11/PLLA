@@ -46,7 +46,7 @@
 
 \begin{document}
 
-\title{Towards an efficient penalty method for linear and convex quadratic programming \footnote{This work was supported by FAPESP 2013/05475-7, 2017/18308-2 and CNPq.}}
+\title{Towards an efficient penalty method for convex quadratic programming \footnote{This work was supported by FAPESP 2013/05475-7, 2017/18308-2 and CNPq.}}
 \author{
   L. F. Bueno \thanks{Institute of Science and Technology, Federal
     University of S\~ao Paulo, S\~ao Jos\'e dos Campos-SP,
@@ -907,8 +907,7 @@ So, by Corollary \ref{convfinitasolunica}, we have that the Algorithm finds $x^*
 
 The goal of our numerical experiments is to show that the augmented Lagrangian method proposed is compatible with a simple implementation of a pure interior point method. This is done in order to motivate further studies on augmented Lagrangian methods applied to linear and convex problems. We implemented Algorithm \ref{ALalg} (called \texttt{LAQP}) and the interior point method for convex quadratic programming as described in~\cite{gondzio25} (called \texttt{IPM}), both in Julia~\cite{Bezanson:2017g}. In \texttt{IPM}, finite upper bounds were included as new constraints by adding slack variables. We used subroutine MA57~\cite{Duff:2004cx} from HSL~\cite{HSL:7NBcL3Rm} to solve the augmented linear systems that arise in both methods. We run the tests on an iMac Pro with Intel Xeon W 3.2 GHz Processor and 32 GB RAM.
  
-
-Our tests are based on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. We also add a homogeneous quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, the Newtonian direction can be computed without refined linear solvers or a regularization strategy and the second-order Lagrange multiplier update is easily computable.
+Our tests are based on the \textsc{Netlib}~\cite{Dongarra:1987jk} test collection of linear programming problems. Due to the difficulty of the problems, we use a presolved version of the collection available at~\cite{HagerCoapSoftware}. Our main goal is to apply the algorithm to linear programming problems, however, we found out that our implementation is too sensible to a fine tuning of the regularization parameter and the results were not satisfatory. Thus, we added a homogeneous quadratic term to the objective function with Hessian equal to the identity matrix, in order to obtain strictly convex separable quadratic problems. In this way, we may take the regularization parameter equal to zero at each iteration and we may use the second-order Lagrange multiplier update, which is easily computable. Also, the Newtonian direction can be computed without refined linear solvers.
 
 We set the initial point using two steps. In the first step, we choose one of the four possible initial point candidates:
 
@@ -975,7 +974,7 @@ With the same two configurations, we perform a more thorough test on all 95 \tex
 \end{figure}
 
 
-We emphasize that our goal is to compare a pure interior point method versus the pure augmented Lagrangian method proposed, without sophisticated accelerations and safeguards. This explains the overall poor behavior of both methods. As pointed out in~\cite{Haeser:2017wl}, IPOPT~\cite{Wachter:2005hk}, a well tuned interior point method, solves 56 of the 68 smallest problems of the \textsc{Netlib} collection when limited to 300 iterations. They also show that no strict interior point exists on circa 65\% of \textsc{Netlib} problems, which indicates that those  are rather difficult problems.
+We emphasize that our goal is to compare a pure interior point method versus the pure augmented Lagrangian method proposed, without sophisticated accelerations and safeguards. This explains the overall poor behavior of both methods. As pointed out in~\cite{Haeser:2017wl}, IPOPT~\cite{Wachter:2005hk}, a well tuned interior point method for nonlinear optimization, solves 56 of the 68 smallest problems of the \textsc{Netlib} collection when limited to 300 iterations. They also show that no strict interior point exists on circa 65\% of \textsc{Netlib} problems, which indicates that those  are rather difficult problems and, in particular, explains the overall poor behavior of the pure interior point implementation.
 
 
 To analyze the behavior of both methods more carefully, \Cref{fig:Bar_LAQPNew-IPMMehrotra_All_2} below represents a ratio calculated for each of the 95 available problems on the horizontal axis, ordered in increasing size of non-zero entries in the constraint matrix. A bar with a positive vertical coordinate indicates that \texttt{LAQPHybrid-New} is the best solver in terms of the number of linear systems solved, while a negative coordinate indicates that \texttt{IPM-Mehrotra} is better. The size of the bar corresponds to the absolute value of $r_i$, for each problem $i$, computed as 
@@ -1124,7 +1123,9 @@ In the first test, excluding two problems where no method found a solution (poss
 %para programação não linear. O ponto inicial pooderia ser muito melhor aproveitado do que em métodos
 %de pontos interiores ou no método simplex.
 
--- usar IPM melhor
+In this paper we considered an implementation of a penalty method for convex quadratic programming, where bound constraints are penalized and linear equality constraints are carried out to the subproblems. For solving the piecewise quadratic subproblems we employ a Newtonian method with exact line searches, where we were able to show finite convergence of both the inner and the outer algorithms. In our numerical experiments we compared our approach with a pure interior point approach, where we showed that both methods behave similarly while our method was superior in solving a problem from near-optimal but non-interior initial points. This situation is relevant in at least three situations: sensitivity analysis, branch and bound methods and in sequential quadratic (or linear) programming methods for solving general nonlinear problems. This is due to the fact that our method does not need strict interiority or proximity to the central path in order to behave properly.
+
+The natural question that arises is whether our approach scales to be competitive with professional interior point codes. It is well known that sofisticated techniques for solving the linear systems arising in the interior point iteration are available \cite{}, either for the augmented system or for the normal equations. All these techniques can also be employed for enhancing our augmented Lagrangian method, and we leave to a future study a more robust comparison in this sense. Also, it remains to be investigated how to fine tune the regularization parameter to allow our method to solve linear programming problems compatibly with interior point methods.
 
 \printbibliography
 % \bibliographystyle{plain}
