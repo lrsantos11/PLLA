@@ -956,7 +956,7 @@ With respect to the choice of Lagrange multiplier update for \texttt{LAQP}, we u
 
 
 
-Based on these results, we decide to use \texttt{Mehrotra}  as initial point for \texttt{IPM} and \texttt{New} for \texttt{LAQP}. The performance profile comparing those two results is presented in \Cref{fig:PP_LAQPHybridNew-IPMMehrotra}.
+Based on these results, we decide to use \texttt{Mehrotra}  as the initial point for \texttt{IPM} and \texttt{New} for \texttt{LAQP}. The performance profile comparing those two results is presented in \Cref{fig:PP_LAQPHybridNew-IPMMehrotra}.
 
 %The same test on the SMALL subset{}
 
@@ -1013,90 +1013,92 @@ Based on these results, we conclude that the augmented Lagrangian method with th
 We envision that the main quality of our method, in comparison with interior point methods, is the possibility of naturally exploiting a very good initial point, without the need of projecting onto a strict interior. Hence, we consider the previous test of \texttt{LAQPHybrid-New} and \texttt{IPM-Mehrotra} on the whole (modified) \textsc{Netlib} test set and we select only the $29$ problems where both solvers were successful. We then take a perturbation of the solution $(x^*,\lambda^*,\mu_l^*,\mu_u^*)$ found by each solver and we run each solver again with this point as the initial point. The perturbation for the augmented Lagrangian is given by $[x^0]_i=(1+10^{-3}n_i)[x^*]_i+m_i$, where $n_i$ is sampled from the standard normal distribution and $m_i$ is a random value between $-10^{-5}$ and $10^{-5}$, for each coordinate $i$. A similar perturbation is performed for $\lambda^0, \mu_l^0$ and $\mu_u^0$. For the interior point method, after the perturbation of $(x^*,\lambda^*,\mu_l^*,\mu_u^*)$ as described above, we perform a Mehrotra type shift to obtain an interior initial point and its corresponding multipliers.  The results are on \Cref{tab:LAQP_IPM_Perturbed_x} where the first column is the name of the problem on the \textsc{Netlib} collection, the second column is the number of non-zero entries of the matrix $A$, the third and forth columns are the number of iterations of \texttt{LAQP} and \texttt{IPM}, respectively, needed for solving the problem originally from their corresponding initial points, while the fifth and sixth columns correspond to the number of additional iterations for \texttt{LAQP} and \texttt{IPM}, respectively, needed for solving the problem from a perturbation of the solution.
 
 \begin{table}[!hbt]\centering
-\caption{Number of linear systems solved before and after perturbation on $x^{0}$ for \texttt{LAQP} and \texttt{IPM}.}
+\caption{Number of linear systems solved before and after starting from a perturbed solution for \texttt{LAQP} and \texttt{IPM}.}
 \label{tab:LAQP_IPM_Perturbed_x}
 \begin{tabular}{>{\ttfamily}lS[table-format=5,group-minimum-digits=3]cccc}
 \toprule
 {\normalfont \textbf{Problem}}  & {\textbf{Nonzeros}} &\texttt{LAQP} &   \texttt{IPM} & \texttt{LAQP-Perturbed}  & \texttt{IPM-Perturbed} \\ 
 \midrule  
-afiro    & 88   &   16          &   13   &   \textbf{2}      &  xx  \\
-adlittle & 465  &   61          &   17   &   \textbf{2}      &  xx  \\
-agg2     & 4515 &   64          &   34   &   \textbf{2}      &  xx  \\
-agg3     & 4531 &   61          &   33   &   \textbf{2}      &  xx  \\
+afiro    & 88   &   16          &   \textbf{13}   &   \textbf{2}      &  xx  \\
+adlittle & 465  &   61          &   \textbf{17}   &   \textbf{2}      &  xx  \\
+agg2     & 4515 &   64          &   \textbf{34}   &   \textbf{2}      &  xx  \\
+agg3     & 4531 &   61          &   \textbf{33}   &   \textbf{2}      &  xx  \\
 beaconfd & 3476 &    \textbf{2} &   15   &   \textbf{2}      &  xx  \\
-blend    & 521  &   22          &   16   &   \textbf{2}      &  xx  \\
-bore3d   & 1525 &   36          &   38   &  19               &  xx  \\
-e226     & 2767 &   73          &   28   &  61               &  xx  \\
-ganges   & 7021 &  152          &   28   &  44               &  xx  \\
+blend    & 521  &   22          &   \textbf{16}   &   \textbf{2}      &  xx  \\
+bore3d   & 1525 &   \textbf{36}          &   38   &  19               &  xx  \\
+e226     & 2767 &   73          &   \textbf{28}   &  61               &  xx  \\
+ganges   & 7021 &  152          &   \textbf{28}   &  44               &  xx  \\
 grow15   & 5665 &   \textbf{76} &   79   &   \textbf{2}      &  xx  \\
 grow22   & 8318 &   \textbf{40} &   84   &   \textbf{2}      &  xx  \\
 grow7    & 2633 &   \textbf{71} &   80   &   \textbf{2}      &  xx  \\
-israel   & 2358 &  \textbf{179} &  132   &  77               &  xx  \\
-kb2      & 291  &  108          &   20   &  89               &  xx  \\
+israel   & 2358 &  179 &  \textbf{132}   &  77               &  xx  \\
+kb2      & 291  &  108          &   \textbf{20}   &  89               &  xx  \\
 lotfi    & 1086 &   \textbf{14} &   17   &   \textbf{2}      &  xx  \\
-modszk1  & 4158 &  294          &   50   &  24               &  xx  \\
-qap8     & 8304 &  131          &   16   & --                &  xx  \\
+modszk1  & 4158 &  294          &   \textbf{50}   &  24               &  xx  \\
+qap8     & 8304 &  131          &   \textbf{16}   & --                &  xx  \\
 sc105    & 281  &    \textbf{8} &   21   &   \textbf{2}      &  xx  \\
 sc205    & 552  &   \textbf{16} &   62   &   \textbf{2}      &  xx  \\
 sc50a    & 131  &    \textbf{2} &    7   &   \textbf{2}      &  xx  \\
 sc50b    & 119  &    \textbf{4} &   10   &   \textbf{2}      &  xx  \\
-scrs8    & 4029 &  195          &   31   &  10               &  xx  \\
+scrs8    & 4029 &  195          &   \textbf{31}   &  10               &  xx  \\
 scsd6    & 5666 &   \textbf{58} &   92   &  62               &  xx  \\
-sctap1   & 2052 &   69          &   45   &   \textbf{3}         xx  \\
-sctap2   & 8124 &  126          &   38   &  38               &  xx  \\
+sctap1   & 2052 &   69          &   \textbf{45}   &   \textbf{3}       &  xx  \\
+sctap2   & 8124 &  126          &   \textbf{38}   &  38               &  xx  \\
 seba     & 4874 &    \textbf{9} &   12   &   \textbf{2}      &  xx  \\
-share2b  & 730  &   43          &   37   &   5               &  xx  \\
-stair    & 3857 &   81          &   59   &   \textbf{2}      &  xx  \\
-stocfor1 & 474  &   15          &   13   &  46               &  xx  \\
+share2b  & 730  &   43          &   \textbf{37}   &   5               &  xx  \\
+stair    & 3857 &   81          &   \textbf{59}   &   \textbf{2}      &  xx  \\
+stocfor1 & 474  &   15          &   \textbf{13}   &  46               &  xx  \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 The \texttt{LAQPHybrid} variant of \texttt{LAQP} always performs the first Lagrange multiplier update as the first-order one, which we have observed that it is not efficient for solving the problem from a perturbed solution. Hence, in this test, we always perform the second-order update, that is, \texttt{LAQPDual} is run. We note that \texttt{LAQP} was not able to solve problem \texttt{qap8} from the perturbed solution.
 
-In \Cref{tab:LAQP_IPM_Perturbed_x} we can see that in $17$ problems ($59$\%), \texttt{LAQP} found the solution faster than \texttt{IPM}. In this cases, \texttt{LAQP} took in average $2$ additional iterations, while \texttt{IPM} took, in average, $4.8$ iterations, excluding three cases where more than $40$ additional iterations were necessary. In $1$ problem both methods took $5$ additional iterations and in the remaining $11$ problems ($38$\%) where \texttt{IPM} found the solution faster than \texttt{LAQP}, we can see that, in general, these were cases where in the original run \texttt{LAQP} was already inferior to \texttt{IPM}. Also, in $12$ problems where \texttt{LAQP} was originally faster than \texttt{IPM}, \texttt{LAQP} was still faster to recover the solution on the second run on $10$ problems ($83$\%), while on $16$ problem where \texttt{IPM} was faster on the first run, \texttt{IPM} was able to be faster to recover the solution on the second run on $9$ problems ($56$\%).
+In \Cref{tab:LAQP_IPM_Perturbed_x} we can see that in $17$ problems ($59$\%), \texttt{LAQP} found the solution faster than \texttt{IPM}. In this cases, \texttt{LAQP} took in average $2$ additional iterations, while \texttt{IPM} took, in average, $4.8$ iterations, excluding three cases where more than $40$ additional iterations were necessary. In $1$ problem both methods took $5$ additional iterations and in the remaining $11$ problems ($38$\%) where \texttt{IPM} found the solution faster than \texttt{LAQP}, we can see that, in general, these were cases where in the original run \texttt{LAQP} was already inferior to \texttt{IPM}. More specifically, in $12$ problems where \texttt{LAQP} was originally faster than \texttt{IPM}, \texttt{LAQP} was still faster to recover the solution on the second run on $10$ problems ($83$\%), while on $17$ problems where \texttt{IPM} was faster on the first run, \texttt{IPM} was able to be faster to recover the solution on the second run on $9$ problems ($53$\%).
 
-We consider again this collection of $29$ problems where both methods found a solution and their corresponding solutions found, say, $x^*$. We now perform two tests by using the solution of this problem as initial points to a perturbed problem. The first test consists of perturbing the problem in the following way: We find the first index $i$ of $x^*$ such that $l_i=[x^*]_i$ and we then redefine $l_i\leftarrow l_i+1$. Now $x^*$ is infeasible but it can be used as the initial point for \texttt{LAQP}. For \texttt{IPM} we use $x^*$ followed by a Mehrotra shift as the initial point. The second test consists of finding the index of the largest interior component of $x^*$, that is, $l_i<[x^*]_i<u_i$. For this index we re-define $u_i$ as the largest integer smaller than $[x^*]_i$. In both tests we consider appropriate safeguards to ensure $l\leq u$. The results are reported in Tables \ref{tab:LAQP_IPM_Perturbed_l} and \ref{tab:LAQP_IPM_Perturbed_u}.
+We consider again this collection of $29$ problems where both methods found a solution and their corresponding solutions found, say, $x^*$. We now perform two tests by using the solutions found as initial points to a perturbed problem. The first test consists of perturbing the problem in the following way: We find the first index $i$ of $x^*$ such that $l_i=[x^*]_i$ and we then redefine $l_i\leftarrow l_i+1$. This corresponds to a sensibility analysis perturbation. Now $x^*$ is infeasible but it can be used as the initial point for \texttt{LAQP}. For \texttt{IPM} we use $x^*$ followed by a Mehrotra shift as the initial point. The second test consists of finding the index of the largest interior component of $x^*$, that is, $l_i<[x^*]_i<u_i$. For this index we re-define $u_i$ as the largest integer smaller than $[x^*]_i$. In both tests we consider appropriate safeguards to ensure $l\leq u$. The results are reported on \Cref{tab:LAQP_IPM_Perturbed_l}.
 
 
 
 
 \begin{table}[!hbt]\centering
-\caption{Number of systems solved after perturbation on $x^{0}$ for \texttt{LAQP} and \texttt{IPM}.}
-\label{tab:LAQP_IPM_Perturbed_lu}
-\begin{tabular}{>{\ttfamily}lcccc}
+\caption{Number of systems solved after perturbing the problem with respect to an active bound (Test 1) and an inactive bound (Test 2).}
+\label{tab:LAQP_IPM_Perturbed_l}
+\begin{tabular}{>{\ttfamily}lcc|cc}
 \toprule
-{\normalfont \textbf{Problem}} & \texttt{LAQP-Perturbed-l}   & \texttt{IPM-Perturbed-l} & \texttt{LAQP-Perturbed-u}   & \texttt{IPM-Perturbed-u} \\ 
+    &  \multicolumn{2}{c}{Test 1} &   \multicolumn{2}{c}{Test 2}  \\
+    \midrule  
+{\normalfont \textbf{Problem}} & \texttt{LAQP}   & \texttt{IPM} & \texttt{LAQP}   & \texttt{IPM} \\ 
 \midrule  
-afiro    &   7 &    8 &    2 &    8   \\
-adlittle &   2 &    5 &    2 &   10   \\
-agg2     &   2 &    4 &    2 &   15   \\
-agg3     &   2 &    4 &    2 &   18   \\
-beaconfd &   2 &    3 &    2 &    7   \\
-blend    & 137 &  233 &    6 &   10   \\
-bore3d   &  10 &    9 &    2 &   14   \\
-e226     & --  &  --  &    2 &   19   \\
-ganges   &  75 &    4 &    3 &   14   \\
-grow15   &   5 &   16 &    4 &   33   \\
-grow22   &   5 &   24 &    7 &  142   \\
-grow7    &  51 &   35 &    3 &   23   \\
-israel   &  67 &   10 &    6 &   17   \\
-kb2      &  42 &  114 &   47 &   31   \\
-lotfi    &   2 &    3 &    2 &   11   \\
-modszk1  & 417 &    5 &  --  &   17   \\
-qap8     & --  &  --  &  --  &   26   \\
-sc105    &   2 &    4 &    2 &    8   \\
-sc205    &   2 &    4 &    2 &   10   \\
-sc50a    &   2 & --   &    2 &    6   \\
-sc50b    &   2 &    4 &    3 &    7   \\
-scrs8    &   2 &  --  &    2 &   21   \\
-scsd6    & 106 &   42 &    8 &   29   \\
-sctap1   &  25 &   59 &    3 &   16   \\
-sctap2   &  36 &  206 &   26 &   16   \\
+afiro    &   7 &    8 &    2 &    6   \\
+adlittle &   2 &    5 &    2 &    6   \\
+agg2     &   2 &    4 &    2 &    8   \\
+agg3     &   2 &    4 &    2 &    6   \\
+beaconfd &   2 &    3 &    2 &    5   \\
+blend    & 137 &  233 &    7 &   10   \\
+bore3d   &  10 &    9 &    2 &    8   \\
+e226     & --  &  --  &    2 &    6   \\
+ganges   &  75 &    4 &   35 &    6   \\
+grow15   &   5 &   16 &    6 &   39   \\
+grow22   &   5 &   24 &    9 &  154   \\
+grow7    &  51 &   35 &    4 &   24   \\
+israel   &  67 &   10 &    6 &   13   \\
+kb2      &  42 &  114 &   48 &   15   \\
+lotfi    &   2 &    3 &    2 &    5   \\
+modszk1  & 417 &    5 &   -- &    6   \\
+qap8     & --  &  --  &   -- &  138   \\
+sc105    &   2 &    4 &    2 &    7   \\
+sc205    &   2 &    4 &    2 &    5   \\
+sc50a    &   2 &  --  &    2 &    6   \\
+sc50b    &   2 &    4 &    3 &    9   \\
+scrs8    &   2 &  --  &    2 &    6   \\
+scsd6    & 106 &   42 &  135 &   99   \\
+sctap1   &  25 &   59 &    3 &    9   \\
+sctap2   &  36 &  206 &    6 &   13   \\
 seba     &   2 &    4 &    2 &    8   \\
-share2b  &  24 &   80 &   24 &   16   \\
-stair    &  11 &   45 &   15 &   14   \\
-stocfor1 &  61 &   12 &   25 &   10   \\
+share2b  &  24 &   80 &   24 &   15   \\
+stair    &  11 &   45 &   16 &    7   \\
+stocfor1 &  61 &   12 &   24 &   20   \\
 \bottomrule
 \end{tabular}
 \end{table}
