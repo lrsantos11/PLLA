@@ -62,7 +62,7 @@
 
 \begin{document}
 
-\title{Towards an efficient penalty method for convex quadratic programming\thanks{This work was supported by Brazilian Agencies \emph{Funda\c{c}\~{a}o de Amparo \`{a} Pesquisa do Estado de S\~{a}o Paulo (FAPESP)} (grants 2013/05475-7 and 2017/18308-2)  and \emph{Conselho Nacional de Desenvolvimento Cient\'{i}fico e Tecnol\'{o}gico (CNPq)}.}}
+\title{Towards an efficient penalty method for convex quadratic programming\thanks{This work was supported by Brazilian Agencies \emph{Funda\c{c}\~{a}o de Amparo \`{a} Pesquisa do Estado de S\~{a}o Paulo (FAPESP)} (grants 2013/05475-7, 2015/02528-8 and 2017/18308-2)  and \emph{Conselho Nacional de Desenvolvimento Cient\'{i}fico e Tecnol\'{o}gico (CNPq)}.}}
 \author{
   Lu{\'\i}s Felipe Bueno 
   \and
@@ -72,7 +72,7 @@
 }
 
 \institute{
-  Luis Felipe Bueno \Letter \at Institute of Science and Technology, Federal
+  Lu{\'\i}s Felipe Bueno \Letter \at Institute of Science and Technology, Federal
     University of S\~ao Paulo, \\ S\~ao Jos\'e dos Campos-SP,
     Brazil. \email{lfelipebueno@gmail.com}
     \and 
@@ -144,7 +144,7 @@ The augmented Lagrangian method as described in \cite{bmbook}, in each iteration
 \item \textbf{Step 3 (update penalty)}: Set $V^{k+1}=\max\{G(x^{k+1}),-\mu^k/\rho_k\}$. If $$\|(H(x^{k+1}),V^{k+1})\|_\infty> \frac{1}{2}\|(H(x^{k}),V^{k})\|_\infty,$$ set $\rho_{k+1}=10\rho_k$, otherwise set $\rho_{k+1}=\rho_k$.
 \end{itemize}
 
-One of the most usual rules for updating the multipliers is the first order update in which $\lambda^{k+1}$ is computed as the projection of $\lambda^k+\rho_k H(x^{k+1})$ onto a safeguarded box $[\lambda_{\min},\lambda_{\max}]$ and $\mu^{k+1}$ as the projection of $\mu^k+\rho_k G(x^{k+1})$ onto a safeguarded box $[0,\mu_{\max}]$. Standard first- and second-order global convergence results are proved under weak constraint qualifications, depending whether subproblems are solved approximately up to first- or second-order, respectively. See, for instance, \cite{bhr} for details. If approximate global minimizers are found for the subproblems, one gets convergence to a global minimizer, and that is the main reason for using a safeguarded Lagrange multiplier (see \cite{bmbook}). See also \cite{steck}.
+One of the most usual rules for updating the multipliers is the first order update in which $\lambda^{k+1}$ is computed as the projection of $\lambda^k+\rho_k H(x^{k+1})$ onto a safeguarded box $[\lambda_{\min},\lambda_{\max}]$ and $\mu^{k+1}$ as the projection of $\mu^k+\rho_k G(x^{k+1})$ onto a safeguarded box $[0,\mu_{\max}]$. Standard first- and second-order global convergence results are proved under weak constraint qualifications, depending whether subproblems are solved approximately up to first- or second-order, respectively. See, for instance, \cite{bhr} for details. If approximate global minimizers are found for the subproblems, one gets convergence to a global minimizer, and that is the main reason for using a safeguarded Lagrange multiplier (see \cite{bmbook} and \cite{steck}).
 
 In terms of the global convergence theory, the choice of lower- and upper-level constraints can be done arbitrarily, yet, the practical behavior of the method depends strongly on the quality of the optimization solver to minimize the augmented Lagrangian function subject to the lower-level constraints. The ALGENCAN implementation\footnote{Freely available at: \url{www.ime.usp.br/~egbirgin/tango}.} considers $F=\{x\in\R^n \mid \ell\leq x\leq u\}$ and penalizes all remaining constraints, using an active-set strategy with the spectral projected gradient choice to leave a non-optimal face, when solving the box-constrained subproblems.
 
@@ -182,7 +182,7 @@ whose optimality conditions are $\nabla L(x,\rho,\mu_{\ell},\mu_u)+ A^T \lambda=
   \caption{Augmented Lagrangian algorithm}
   \label{ALalg}
   \begin{algorithmic}
-\State \noindent  \textbf{Step 0 (initialization)}: \\ Let $\rho_0=1$ and $\varepsilon \geq 0$ and set $k\leftarrow0$. Compute $(x^0,\lambda^0,\mu_{\ell}^0,\mu_u^0)\in F\times\R^m\times\R^n_+\times\R^n_+$.\\
+\State \noindent  \textbf{Step 0 (initialization)}: \\ Let $\rho_0=1$ and $\varepsilon \geq 0$, choose a positive sequence $\varepsilon_k \to 0^+$ and set $k\leftarrow0$. Compute $(x^0,\lambda^0,\mu_{\ell}^0,\mu_u^0)\in F\times\R^m\times\R^n_+\times\R^n_+$.\\
 
 \State \noindent \textbf{Step 1 (stopping criterion)}:\\ Set the primal residual $r_P=\max\{0,\ell-x^k,x^k-u\}$, the dual residual $r_D=Qx^k+c+A^\T\lambda^k-\mu_{\ell}^k+\mu_u^k$ and the complementarity measure $r_C=(\min(\mu_{\ell}^k,x^k-\ell),\min(\mu_u^k,u-x^k))$. Stop if $\|(r_P,r_D,r_C)\|_\infty\leq\varepsilon$.\\
 
@@ -418,7 +418,7 @@ In the following, we consider $x^k$ as the point obtained in the $k$-th iteratio
 		\State \noindent \textbf{Step 1 (stopping criterion)}:\\ Set $r=Qx^k+c+A^\T\lambda^k-\rho\max\{\ell-x^k,0\}+\rho\max\{x^k-u,0\}$ and stop if $\|r\|_\infty\leq\varepsilon$.\\
 		
 		
-		\State  \noindent \textbf{Step 2 (Regularization)}:\\
+		\State  \noindent \textbf{Step 2 (regularization)}:\\
 		Define $H^k$ as the diagonal matrix such that $H^k_{ii}=0$ if $\ell_i<x_i^k<u_i$, and $H_{ii}^k=\rho$, otherwise. If $\left(\begin{array}{cc}Q+H^k&A^\mathtt{T}\\A&0\end{array}\right)$ is singular, set $ H^k=H^k+\varepsilon_{reg}I$.\\
 		
 		
